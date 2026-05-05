@@ -1,0 +1,158 @@
+/* ============================================================
+   PENDULUM PROPERTY PARTNERS — DESIGN TOKENS
+   The single source of truth. Import this on every offering
+   page and reference variables instead of hard-coding values.
+
+   Usage:
+     <link rel="stylesheet" href="../02_Tokens_and_Code/tokens.css">
+     color: var(--p-navy);
+============================================================ */
+
+:root {
+  /* -------- Brand colors -------- */
+  --p-navy:        #215587;   /* primary brand color (Pendulum Navy) */
+  --p-cyan:        #009ade;   /* secondary brand accent (Pendulum Cyan) */
+  --p-charcoal:    #2B2E31;   /* deep heading / body-emphasis */
+  --p-gray:        #6D6E71;   /* body text */
+  --p-mist:        #EDEDED;   /* light surface / dividers */
+  --p-mist-30:     rgba(237, 237, 237, 0.302); /* 30% mist (from site palette) */
+  --p-white:       #FFFFFF;
+  --p-black:       #000000;
+
+  /* Elementor palette presets — these are kit-level options that never actually
+     appear on any rendered Pendulum page. Kept here as a reference in case the
+     team wants to introduce a new accent later, but DO NOT use these on
+     offering pages — the brand is navy + cyan + neutrals only. */
+  --p-preset-teal:   #24D5B4;
+  --p-preset-rust:   #CE4918;
+  --p-preset-peach:  #FFBC7D;
+
+  /* -------- Color roles (semantic) -------- */
+  --color-bg:           var(--p-white);
+  --color-bg-alt:       var(--p-mist);
+  --color-bg-dark:      var(--p-navy);
+  --color-text:         var(--p-gray);
+  --color-text-strong:  var(--p-charcoal);
+  --color-text-onDark:  var(--p-white);
+  --color-link:         var(--p-navy);
+  --color-link-hover:   var(--p-cyan);
+  --color-border:       var(--p-mist);
+  --color-cta:          var(--p-navy);
+  --color-cta-hover:    var(--p-cyan);
+
+  /* -------- Typography --------
+     Three families: Avenir for body/H1, Quicksand for content H2-H6,
+     Manrope for eyebrows on hero pages (matches the live site exactly). */
+  --font-brand:    "Avenir", "Nunito Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-display:  "Quicksand", "Avenir", "Helvetica Neue", Arial, sans-serif;
+  --font-body:     "Avenir", "Nunito Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-eyebrow:  "Manrope", "Avenir", "Nunito Sans", Arial, sans-serif;
+
+  /* Weights */
+  --fw-light:     300;
+  --fw-regular:   400;
+  --fw-medium:    500;
+  --fw-bold:      700;
+  --fw-black:     900;
+
+  /* Type scale (matches live site exactly) */
+  --fs-body:      16px;
+  --fs-h1:        36px;     /* Avenir 900, capitalized — the kit default */
+  --fs-hero:      70px;     /* Avenir 900, used for homepage carousel hero */
+  --fs-hero-sub:  20px;     /* Avenir bold, hero supporting line */
+  --fs-page-h1:   60px;     /* Avenir 900 solid white, sub-page heroes (About/Expertise/Properties) */
+  --fs-h2:        54.5px;   /* Quicksand 700 */
+  --fs-h3:        43px;     /* Quicksand 700 */
+  --fs-h4:        35px;     /* Quicksand 700 */
+  --fs-h5:        28px;     /* Quicksand 700 */
+  --fs-h6:        22.5px;   /* Quicksand 700 */
+  --fs-secondary: 24px;     /* Avenir bold subheads */
+  --fs-eyebrow:   11px;     /* Manrope 700 uppercase, tracked 2px (live site spec) */
+
+  /* Line heights & tracking */
+  --lh-body:      1.5;
+  --lh-display:   1.3;
+  --lh-h2:        1.4;
+  --lh-hero:      1.05;     /* tight on big hero type */
+  --ls-display:   -1px;     /* tight tracking on display headings */
+  --ls-eyebrow:   2px;      /* live-site eyebrow tracking — 2px on 11px = ~0.18em */
+  --ls-nav:       0.05em;   /* nav uppercase tracking */
+
+  /* -------- Layout -------- */
+  --container-max:    1170px;
+  --container-pad-x:  24px;
+  --bp-tablet:        1024px;
+  --bp-mobile:        767px;
+
+  /* Spacing scale */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;   /* default Elementor widget gap */
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  96px;
+  --sp-10: 128px;
+
+  /* Radii */
+  --r-none:  0;
+  --r-sm:    2px;
+  --r-md:    4px;
+  --r-lg:    8px;
+  --r-pill:  9999px;
+
+  /* Borders */
+  --bw-hair: 1px;
+  --bw-rule: 2px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md:  0 4px 12px rgba(33, 85, 135, 0.08);
+  --shadow-lg:  0 12px 32px rgba(33, 85, 135, 0.12);
+
+  /* Hero overlays (live-site exact values) */
+  --overlay-hero-section: rgba(33, 85, 135, 0.91);  /* #215587E8 — solid section overlay */
+  --overlay-hero-photo:   rgba(0, 0, 0, 0.18);      /* light darkening on photos for white-text legibility */
+
+  /* Motion */
+  --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:    150ms;
+  --dur-base:    250ms;
+  --dur-slow:    400ms;
+}
+
+/* ============================================================
+   FONT-FACE — Avenir is licensed. The live Pendulum site self-
+   hosts the woff2 files at /wp-content/uploads/2021/12/. To keep
+   parity on a new offering page, either:
+     (a) host the same .woff2 files in this project, OR
+     (b) leave the @font-face commented out and the fallback
+         (Nunito Sans) will render — visually very close.
+============================================================ */
+
+/*
+@font-face {
+  font-family: "Avenir";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../03_Logo_and_Imagery/fonts/Avenir-Light.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Avenir";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../03_Logo_and_Imagery/fonts/Avenir-Heavy.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Avenir";
+  font-style: normal;
+  font-weight: 900;
+  src: url("../03_Logo_and_Imagery/fonts/Avenir-Black.woff2") format("woff2");
+}
+*/
+
+/* Quicksand is available on Google Fonts — load via:
+   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+*/

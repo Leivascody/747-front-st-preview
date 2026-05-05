@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#215587">
+
+<title>747 Front St — Pendulum Property Partners</title>
+<meta name="description" content="An off-market loan acquisition in San Francisco's Jackson Square submarket. $47.25M basis at $579/sf — 88¢ on the dollar. Targeted 36.5% levered IRR over a 24-month hold.">
+
+<!-- Open Graph / Twitter (Theme C) -->
+<meta property="og:title" content="747 Front St — Pendulum Property Partners">
+<meta property="og:description" content="Off-market loan acquisition in Jackson Square at 88¢ on the dollar. $47.25M / $579 PSF. Targeted 36.5% levered IRR / 1.84x over 24 months.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="747 Front St — Pendulum">
+<meta name="twitter:description" content="Loan acquisition in Jackson Square at 88¢ on the dollar.">
+<meta name="twitter:image" content="assets/hero.jpg">
+
+<link rel="icon" href="assets/favicon-512.png">
+<link rel="preload" as="image" href="assets/hero.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Quicksand:wght@400;500;700&family=Nunito+Sans:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+
+<style>
+  /* Page-specific */
+  .asset-stat { padding: var(--sp-4) 0; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; gap: var(--sp-4); }
+  .asset-stat:last-child { border-bottom: 0; }
+  .asset-stat__label { font-family: var(--font-eyebrow); font-size: 11px; font-weight: var(--fw-bold); letter-spacing: 1.5px; text-transform: uppercase; color: var(--p-gray); }
+  .asset-stat__val { font-weight: var(--fw-bold); color: var(--color-text-strong); text-align: right; }
+
+  .tenant-row { display: grid; grid-template-columns: 1fr auto auto; gap: var(--sp-4); align-items: baseline; padding: var(--sp-4) 0; border-bottom: 1px solid var(--color-border); }
+  .tenant-row:last-child { border-bottom: 0; }
+  .tenant-row__name { font-weight: var(--fw-bold); color: var(--color-text-strong); }
+  .tenant-row__type { font-family: var(--font-eyebrow); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--p-gray); }
+  .tenant-row__nra { font-family: var(--font-display); font-weight: var(--fw-bold); color: var(--p-navy); }
+
+  .pull-quote {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-style: italic;
+    color: var(--color-text-strong);
+    border-left: 3px solid var(--p-navy);
+    padding-left: var(--sp-5);
+    margin: var(--sp-6) 0;
+    line-height: 1.5;
+  }
+  .pull-quote cite {
+    display: block;
+    font-family: var(--font-brand);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: var(--fw-bold);
+    color: var(--p-navy);
+    margin-top: var(--sp-3);
+  }
+
+  /* Hero parallax + Ken Burns */
+  @media (prefers-reduced-motion: no-preference) {
+    .p-hero__bg { animation: kenburns 20s ease-out infinite alternate; }
+    @keyframes kenburns { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
+  }
+  /* ============= PASSWORD GATE ============= */
+  /* Note: this is OBSCURITY, not security. Anyone who opens DevTools can see
+     the password. Adequate for "do not share publicly" review with Pendulum's
+     team; do NOT rely on this for protecting sensitive financial data. */
+  .p-gate {
+    position: fixed; inset: 0;
+    background: var(--p-navy);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--sp-5);
+  }
+  .p-gate__panel {
+    background: var(--p-white);
+    width: 100%; max-width: 440px;
+    padding: var(--sp-7);
+    text-align: center;
+  }
+  .p-gate__logo { width: 140px; margin: 0 auto var(--sp-5); display: block; }
+  .p-gate__title {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: var(--fw-bold);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--sp-3);
+  }
+  .p-gate__sub {
+    font-size: 13px; color: var(--p-gray);
+    margin-bottom: var(--sp-5); line-height: 1.6;
+  }
+  .p-gate__input {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    border: 1px solid var(--color-border);
+    background: var(--p-white);
+    outline: none;
+    text-align: center;
+    margin-bottom: var(--sp-3);
+    transition: border-color var(--dur-base) var(--ease);
+  }
+  .p-gate__input:focus { border-color: var(--p-navy); }
+  .p-gate__error { font-size: 12px; color: var(--p-accent-rust); margin-bottom: var(--sp-3); min-height: 18px; }
+  body.is-gated > *:not(.p-gate) { display: none !important; }
+</style>
+</head>
+<body class="is-gated">
+
+<!-- ======= PASSWORD GATE ======= -->
+<div class="p-gate" id="gate">
+  <div class="p-gate__panel">
+    <img class="p-gate__logo" src="assets/logo-navy.svg" alt="Pendulum Property Partners">
+    <h2 class="p-gate__title">Investor Offering · Confidential</h2>
+    <p class="p-gate__sub">
+      This page is for accredited-investor preview only. Please enter the access password
+      provided by Pendulum's deal team.
+    </p>
+    <form id="gate-form" autocomplete="off">
+      <input type="password" class="p-gate__input" id="gate-input" placeholder="Access password" autofocus required>
+      <div class="p-gate__error" id="gate-error" aria-live="polite"></div>
+      <button type="submit" class="p-btn p-btn--no-arrow" style="width:100%;">Enter</button>
+    </form>
+    <p style="font-size:11px;color:var(--p-gray);margin-top:var(--sp-5);line-height:1.6;">
+      Need access? Contact <a href="mailto:khayes@pendulumpp.com">khayes@pendulumpp.com</a>.
+      <br>This preview is not an offer to sell securities.
+    </p>
+  </div>
+</div>
+
+<script>
+  // Simple obfuscated check — not real security, just a soft gate.
+  // The expected password is "Pendulum" — but we don't store it as plaintext;
+  // we compare a small hash. Even so, anyone with DevTools can bypass.
+  (function () {
+    const STORAGE_KEY = 'pendulum_gate_unlocked_v1';
+    const gate = document.getElementById('gate');
+    const form = document.getElementById('gate-form');
+    const input = document.getElementById('gate-input');
+    const error = document.getElementById('gate-error');
+
+    // Open if previously unlocked in this browser
+    if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+      unlock();
+      return;
+    }
+
+    function unlock() {
+      document.body.classList.remove('is-gated');
+      gate.style.display = 'none';
+      try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+    }
+
+    // Lightweight FNV-1a hash so the literal password isn't sitting in source.
+    // Note: not real security — anyone with DevTools can read this script.
+    function hash(s) {
+      let h = 0x811c9dc5 >>> 0;
+      for (let i = 0; i < s.length; i++) {
+        h ^= s.charCodeAt(i);
+        h = Math.imul(h, 0x01000193) >>> 0;
+      }
+      return h.toString(16);
+    }
+    // Hash of "pendulum" (lowercased so the gate is case-insensitive)
+    const EXPECTED = 'a6335e47';
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const guess = input.value.trim().toLowerCase();
+      if (hash(guess) === EXPECTED) {
+        unlock();
+      } else {
+        error.textContent = 'Incorrect password. Try again or contact Pendulum.';
+        input.value = '';
+        input.focus();
+      }
+    });
+  })();
+</script>
+
+<!-- Skip-to-content (a11y) -->
+<a class="p-skip" href="#hero">Skip to content</a>
+
+<!-- Scroll progress (Theme B) -->
+<div class="p-progress" id="progress" aria-hidden="true"></div>
+
+<!-- ======= HEADER (Theme B/D) ======= -->
+<header class="p-header" id="site-header">
+  <div class="p-container p-header__inner">
+    <a href="https://pendulumpp.com" aria-label="Pendulum Property Partners">
+      <img class="p-header__logo" src="assets/logo-white.svg" alt="Pendulum Property Partners">
+    </a>
+    <button class="p-header__menu-btn" aria-label="Menu" onclick="document.getElementById('site-nav').classList.toggle('is-open')"><span></span><span></span><span></span></button>
+    <nav class="p-header__nav" id="site-nav">
+      <a href="#thesis">Thesis</a>
+      <a href="#asset">Asset</a>
+      <a href="#returns">Returns</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#sponsor">Sponsor</a>
+      <a href="#contact" class="p-btn p-btn--onDark" style="padding:10px 20px;font-size:11px;letter-spacing:1.5px;" onclick="event.preventDefault(); openLeadModal();">Request Memo</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ======= HERO (Theme B) ======= -->
+<section class="p-hero" id="hero">
+  <div class="p-hero__bg" id="hero-bg" style="background-image:url('assets/hero.jpg');"></div>
+  <div class="p-hero__overlay"></div>
+  <div class="p-container">
+    <div class="p-hero__content">
+      <span class="p-eyebrow p-eyebrow--onDark" data-bind-html="hero.eyebrow">Investor Offering · San Francisco</span>
+      <h1 class="p-stroke--part" id="hero-h1">747 <b>Front St</b></h1>
+      <p class="p-lead" data-bind-html="hero.subhead">An off-market loan acquisition in Jackson Square — buying scale in San Francisco's most supply-constrained submarket at 88¢ on the dollar.</p>
+      <div style="display:flex;gap:var(--sp-4);margin-top:var(--sp-5);flex-wrap:wrap;">
+        <a class="p-btn p-btn--onDark" href="#" onclick="event.preventDefault(); openLeadModal();">Request Materials</a>
+        <a class="p-btn p-btn--onDark" href="#thesis" style="opacity:0.85;">View the Thesis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= STATS (Theme B — animated counters with partial-stroke style) ======= -->
+<section class="p-section--tight p-section--alt" style="padding-top:var(--sp-8);padding-bottom:var(--sp-7);">
+  <div class="p-container">
+    <div class="p-grid p-grid--4" data-reveal>
+      <div class="p-stats">
+        <div class="p-stat__num p-stat__num--stroke" data-counter="36.5" data-suffix="%" data-decimals="1">0%</div>
+        <div class="p-stat__label">Target Levered Return<sup class="p-fnref">¹</sup></div>
+      </div>
+      <div class="p-stats">
+        <div class="p-stat__num p-stat__num--stroke" data-counter="1.84" data-suffix="×" data-decimals="2">0×</div>
+        <div class="p-stat__label">Target Multiple<sup class="p-fnref">¹</sup></div>
+      </div>
+      <div class="p-stats">
+        <div class="p-stat__num" data-counter="24" data-suffix=" mo">0 mo</div>
+        <div class="p-stat__label">Hold Period</div>
+      </div>
+      <div class="p-stats">
+        <div class="p-stat__num" data-counter="579" data-prefix="$" data-suffix="/sf">$0/sf</div>
+        <div class="p-stat__label">Acquisition Basis</div>
+      </div>
+    </div>
+    <p class="p-disclosure" style="margin-top:var(--sp-6);">
+      <strong>¹ Target Returns</strong>
+      Target levered return and target multiple are projections derived from Pendulum's underwriting (v6) at a 6.50%
+      exit cap rate, base-case scenario. <strong style="display:inline;font-family:inherit;font-size:11px;letter-spacing:0;text-transform:none;color:var(--color-text-strong);">Targets are not guarantees.</strong>
+      Actual returns will vary based on cap rate movement, lease-up timing, capital-markets conditions, and other
+      factors detailed in the offering memorandum. See full risk factors and forward-looking-statement disclaimers at
+      the bottom of this page.
+    </p>
+  </div>
+</section>
+
+<!-- ======= THESIS ======= -->
+<section class="p-section" id="thesis">
+  <div class="p-container" style="max-width:820px;position:relative;">
+    <span class="p-eyebrow" data-reveal>The Thesis</span>
+    <h3 data-reveal>A loan-to-own play on a fully-improved Jackson Square office building.</h3>
+    <p class="p-lead" data-reveal data-bind="thesis.lead">
+      Ares originated a $54.9M loan on the building in 2019 against a $70.5M purchase. Pendulum is acquiring that
+      loan at $47.25M — roughly 88¢ on the dollar of the original origination, and ±57% of the current owner's all-in
+      basis. The building is already $1,019/sf into capital that we don't have to spend.
+    </p>
+
+    <p data-reveal>Three things make the deal work at this basis:</p>
+
+    <ol style="line-height:1.8;color:var(--p-gray);" data-reveal>
+      <li><strong>Jackson Square is the strongest sub-market in SF.</strong> Vacancy in the low-20s vs. 32.8% across the broader CBD. Consistent positive net absorption. Zero new supply in pipeline thanks to zoning constraints.</li>
+      <li><strong>The asset is fully improved.</strong> Historic creative office, fully renovated in 2014 with subsequent capital from the current owner. Above-market ceiling heights, massive windows, reimagined lobby, on-site coffee shop. We're not chasing capex.</li>
+      <li><strong>Strong in-place cash flow with mark-to-market upside.</strong> ±75% occupied with a 4.5-year WALT across Minted, BraunHagey & Borden, IVP, and Empower Gym. Untrended mark-to-market yield of 8% and stabilized yield on cost of ±10%.</li>
+    </ol>
+
+    <blockquote class="pull-quote" data-reveal>
+      There is a somewhat predictable swing of the pendulum in real estate investing. It requires creativity, deep
+      analytical aptitude, experience and conviction to unlock value when fear grips the marketplace.
+      <cite>— Kevin Hayes, CEO, Pendulum Property Partners</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ======= ASSET (Theme B — photo gallery) ======= -->
+<section class="p-section p-section--alt" id="asset" style="position:relative;overflow:hidden;">
+  <img class="p-watermark p-watermark--right" src="assets/mark-tones.svg" alt="">
+  <div class="p-container" style="position:relative;">
+    <span class="p-eyebrow" data-reveal>The Asset</span>
+    <h3 data-reveal>747 Front Street, San Francisco</h3>
+
+    <div class="p-grid p-grid--2" style="margin-top:var(--sp-6);align-items:start;" data-reveal>
+      <div>
+        <h5>Historic creative office in Jackson Square — 81,606 sf, fully renovated 2014.</h5>
+        <div class="asset-stat"><span class="asset-stat__label">Building Area</span><span class="asset-stat__val">81,606 sf</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Year Built / Renovated</span><span class="asset-stat__val">Historic / 2014</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">In-Place Occupancy</span><span class="asset-stat__val">73.7%</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Stabilized Occupancy</span><span class="asset-stat__val">96.0%</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">WALT</span><span class="asset-stat__val">±4.5 years</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Submarket</span><span class="asset-stat__val">Jackson Square</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Submarket Vacancy</span><span class="asset-stat__val">~22% (vs SF 32.8%)</span></div>
+      </div>
+      <div>
+        <h5 style="margin-top:0;">Tenant base</h5>
+        <p style="font-size:13px;color:var(--p-gray);margin-bottom:var(--sp-5);">
+          Diversified across e-commerce, law, venture capital, and fitness. Hover or click any segment for detail.
+        </p>
+
+        <!-- Tenant donut chart — segments calculated from data-pct values -->
+        <div class="p-donut" id="tenant-donut">
+          <svg class="p-donut__chart" width="200" height="200" viewBox="0 0 200 200" aria-label="Tenant breakdown">
+            <!-- Each segment: circle at center, radius 80, stroke-width 30, stroke-dasharray
+                 = segment-length, total-circumference - segment-length. stroke-dashoffset
+                 positions the start. Circumference at r=80 is 502.65. -->
+            <g transform="translate(100,100) rotate(-90)">
+              <!-- Background ring (light) -->
+              <circle cx="0" cy="0" r="80" fill="none" stroke="#EDEDED" stroke-width="30"/>
+              <!-- Minted 35% — 175.93 of 502.65 -->
+              <circle class="p-donut__segment" cx="0" cy="0" r="80" fill="none"
+                stroke="#215587" stroke-width="30"
+                stroke-dasharray="175.93 502.65" stroke-dashoffset="0"/>
+              <!-- BraunHagey & Borden 25% — 125.66 -->
+              <circle class="p-donut__segment" cx="0" cy="0" r="80" fill="none"
+                stroke="#1a4373" stroke-width="30"
+                stroke-dasharray="125.66 502.65" stroke-dashoffset="-175.93"/>
+              <!-- IVP 15% — 75.40 -->
+              <circle class="p-donut__segment" cx="0" cy="0" r="80" fill="none"
+                stroke="#3d7aaf" stroke-width="30"
+                stroke-dasharray="75.40 502.65" stroke-dashoffset="-301.59"/>
+              <!-- Empower Gym 9% — 45.24 -->
+              <circle class="p-donut__segment" cx="0" cy="0" r="80" fill="none"
+                stroke="#009ade" stroke-width="30"
+                stroke-dasharray="45.24 502.65" stroke-dashoffset="-376.99"/>
+              <!-- Other / 3rd floor (currently being re-tenanted) 16% — 80.42 -->
+              <circle class="p-donut__segment" cx="0" cy="0" r="80" fill="none"
+                stroke="#7ba3c8" stroke-width="30"
+                stroke-dasharray="80.42 502.65" stroke-dashoffset="-422.23"/>
+            </g>
+            <!-- Center text -->
+            <text class="p-donut__center-num" x="100" y="98" text-anchor="middle">81,606</text>
+            <text class="p-donut__center-label" x="100" y="118" text-anchor="middle">Sq Ft Total</text>
+          </svg>
+
+          <div class="p-donut__legend">
+            <div class="p-donut__legend-item">
+              <span class="p-donut__legend-swatch" style="background:#215587;"></span>
+              <span><span class="p-donut__legend-name">Minted</span><br><small style="color:var(--p-gray);font-size:12px;">E-commerce · 2-yr renewal</small></span>
+              <span class="p-donut__legend-pct">~35%</span>
+            </div>
+            <div class="p-donut__legend-item">
+              <span class="p-donut__legend-swatch" style="background:#1a4373;"></span>
+              <span><span class="p-donut__legend-name">BraunHagey &amp; Borden</span><br><small style="color:var(--p-gray);font-size:12px;">Law · anchor</small></span>
+              <span class="p-donut__legend-pct">~25%</span>
+            </div>
+            <div class="p-donut__legend-item">
+              <span class="p-donut__legend-swatch" style="background:#3d7aaf;"></span>
+              <span><span class="p-donut__legend-name">IVP</span><br><small style="color:var(--p-gray);font-size:12px;">Venture capital · long WALT</small></span>
+              <span class="p-donut__legend-pct">~15%</span>
+            </div>
+            <div class="p-donut__legend-item">
+              <span class="p-donut__legend-swatch" style="background:#009ade;"></span>
+              <span><span class="p-donut__legend-name">Empower Gym</span><br><small style="color:var(--p-gray);font-size:12px;">Fitness</small></span>
+              <span class="p-donut__legend-pct">~9%</span>
+            </div>
+            <div class="p-donut__legend-item">
+              <span class="p-donut__legend-swatch" style="background:#7ba3c8;"></span>
+              <span><span class="p-donut__legend-name">3rd floor — re-tenanting</span><br><small style="color:var(--p-gray);font-size:12px;">Plan: $75-85/psf turn-key build-out</small></span>
+              <span class="p-donut__legend-pct">~16%</span>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:var(--sp-5);font-size:11px;color:var(--p-gray);font-style:italic;">
+          NRA breakdown shown above is approximate. Final tenant rent roll is in the offering memorandum.
+        </p>
+      </div>
+    </div>
+
+    <div class="p-gallery" style="margin-top:var(--sp-7);" data-reveal>
+      <div class="p-gallery__item" style="background-image:url('assets/gallery-building.jpg');" onclick="openLightbox(this)">
+        <span class="p-gallery__caption">747 <b>Front St</b></span>
+      </div>
+      <div class="p-gallery__item" style="background-image:url('assets/gallery-aerial.jpg');" onclick="openLightbox(this)">
+        <span class="p-gallery__caption">Jackson <b>Square</b></span>
+      </div>
+      <div class="p-gallery__item" style="background:linear-gradient(135deg,var(--p-navy) 0%,var(--p-cyan) 100%);display:flex;align-items:center;justify-content:center;color:white;font-family:var(--font-display);font-weight:700;font-size:18px;text-align:center;padding:var(--sp-5);">
+        Site visit photos<br><span style="opacity:0.7;font-weight:400;">forthcoming</span>
+      </div>
+      <div class="p-gallery__item" style="background:var(--p-charcoal);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.9);font-family:var(--font-display);font-weight:700;font-size:18px;text-align:center;padding:var(--sp-5);">
+        Floor plans<br><span style="opacity:0.7;font-weight:400;">in the memo</span>
+      </div>
+      <div class="p-gallery__item" style="background:var(--p-mist);display:flex;align-items:center;justify-content:center;color:var(--p-navy);font-family:var(--font-display);font-weight:700;font-size:18px;text-align:center;padding:var(--sp-5);">
+        Interior shots<br><span style="opacity:0.7;font-weight:400;">forthcoming</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= LOCATION & SUBMARKET (interactive map) ======= -->
+<section class="p-section" id="location">
+  <div class="p-container">
+    <span class="p-eyebrow" data-reveal>The Location</span>
+    <h3 data-reveal>Two blocks from the Embarcadero, in the heart of Jackson Square.</h3>
+    <p class="p-lead" data-reveal>
+      The submarket has materially outperformed the broader SF CBD — sub-22% vacancy vs. 32.8% citywide,
+      consistent positive net absorption, and supply-constrained zoning that prevents new product from
+      coming online.
+    </p>
+
+    <div class="p-map" id="map" data-reveal>
+      <div class="p-map__legend">
+        <div class="p-map__legend-title">Map legend</div>
+        <div class="p-map__legend-item"><span class="p-map__legend-dot p-map__pin--property"></span>747 Front St</div>
+        <div class="p-map__legend-item"><span class="p-map__legend-dot p-map__pin--transit"></span>Transit (BART / MUNI)</div>
+        <div class="p-map__legend-item" style="margin-top:10px;font-size:11px;color:var(--p-gray);">Shaded area: Jackson Square submarket</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--p-gray);margin-top:var(--sp-3);">Map &copy; OpenStreetMap contributors. Submarket boundary is approximate.</p>
+  </div>
+</section>
+
+<!-- ======= RETURNS CALCULATOR (Theme A — single biggest UX upgrade) ======= -->
+<section class="p-section" id="returns">
+  <div class="p-container" style="max-width:920px;">
+    <span class="p-eyebrow" data-reveal>Run the Numbers</span>
+    <h3 data-reveal>What does this look like with your check size?</h3>
+    <p class="p-lead" data-reveal>
+      Underwriting projects a 36.5% levered IRR and a 1.84x equity multiple in the base case. Drag the toggle to see
+      upside and downside scenarios — exit-cap sensitivity is the dominant variable.
+    </p>
+
+    <div class="p-calc" data-reveal>
+      <div class="p-calc__input-wrap">
+        <span style="font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-gray);">Your investment</span>
+        <div class="p-calc__input-row">
+          <span class="p-calc__currency">$</span>
+          <input class="p-calc__input" type="number" id="calc-input" value="250000" min="50000" max="2000000" step="25000">
+        </div>
+        <span style="font-size:12px;color:var(--p-gray);">Min $50,000 · Max in this round $2,000,000</span>
+      </div>
+
+      <div class="p-calc__slider-wrap">
+        <div class="p-calc__slider-header">
+          <span class="p-calc__slider-label">Exit cap rate sensitivity</span>
+          <span class="p-calc__slider-value" id="cap-value">6.50%</span>
+        </div>
+        <input class="p-calc__slider" type="range" id="cap-slider"
+          min="575" max="700" step="5" value="650"
+          aria-label="Exit cap rate" aria-valuemin="5.75" aria-valuemax="7.00" aria-valuenow="6.50">
+        <div class="p-calc__slider-ticks">
+          <span class="p-calc__slider-tick">5.75%</span>
+          <span class="p-calc__slider-tick">6.00%</span>
+          <span class="p-calc__slider-tick">6.25%</span>
+          <span class="p-calc__slider-tick p-calc__slider-tick--base">6.50%<br><small style="font-weight:400;letter-spacing:0;font-size:9px;">base</small></span>
+          <span class="p-calc__slider-tick">6.75%</span>
+          <span class="p-calc__slider-tick">7.00%</span>
+        </div>
+      </div>
+
+      <div class="p-calc__results">
+        <div>
+          <div class="p-calc__result-num" id="calc-irr">36.5%</div>
+          <div class="p-calc__result-label">Target Levered Return<sup class="p-fnref">²</sup></div>
+        </div>
+        <div>
+          <div class="p-calc__result-num" id="calc-multiple">1.84×</div>
+          <div class="p-calc__result-label">Target Multiple<sup class="p-fnref">²</sup></div>
+        </div>
+        <div>
+          <div class="p-calc__result-num" id="calc-profit">$210,000</div>
+          <div class="p-calc__result-label">Illustrative Profit<sup class="p-fnref">²</sup></div>
+        </div>
+      </div>
+      <p style="margin-top:var(--sp-5);font-size:11px;color:var(--p-gray);line-height:1.6;">
+        <strong style="color:var(--color-text-strong);">² Illustrative Only.</strong> Projections are forward-looking
+        and not a guarantee of future results. They assume the base-case scenario completes as underwritten;
+        actual returns may be materially different. Sensitivity inputs derive from Pendulum's v6 underwriting model
+        (subject to change). This calculator is a planning tool, not an offer or a representation of expected returns.
+        Read the offering memorandum and risk factors before making any investment decision.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CAPITAL STACK + TIMELINE (Theme A) ======= -->
+<section class="p-section p-section--alt" id="capital-stack" style="position:relative;overflow:hidden;">
+  <img class="p-watermark p-watermark--left" src="assets/mark-tones.svg" alt="">
+  <div class="p-container" style="position:relative;">
+    <span class="p-eyebrow" data-reveal>Capital Stack &amp; Timeline</span>
+    <h3 data-reveal>How the deal is funded and what happens when.</h3>
+
+    <div class="p-grid p-grid--2" style="margin-top:var(--sp-6);align-items:start;gap:var(--sp-7);" data-reveal>
+      <div>
+        <h5>Capital stack — $48M total cost</h5>
+        <div class="p-capstack" style="margin-top:var(--sp-4);">
+          <!-- Tier flex-grow values reflect actual proportions:
+               Equity 17.2 / Seller 7.5 / Senior 23.3 -->
+          <div class="p-capstack__tier p-capstack__tier--equity" style="flex-grow:172;">
+            <div>
+              <div class="p-capstack__tier-name">LP / GP Equity</div>
+              <div class="p-capstack__tier-detail">Target levered return 36.5%¹</div>
+            </div>
+            <div>
+              <div class="p-capstack__tier-amt">$17.2M</div>
+              <div class="p-capstack__tier-pct">35.8% of cost</div>
+            </div>
+          </div>
+          <div class="p-capstack__tier p-capstack__tier--mezz" style="flex-grow:75;">
+            <div>
+              <div class="p-capstack__tier-name">Seller Financing</div>
+              <div class="p-capstack__tier-detail">Structured note · subordinate</div>
+            </div>
+            <div>
+              <div class="p-capstack__tier-amt">$7.5M</div>
+              <div class="p-capstack__tier-pct">15.6% of cost</div>
+            </div>
+          </div>
+          <div class="p-capstack__tier p-capstack__tier--senior" style="flex-grow:233;">
+            <div>
+              <div class="p-capstack__tier-name">Senior Debt</div>
+              <div class="p-capstack__tier-detail">Acquisition financing · first lien</div>
+            </div>
+            <div>
+              <div class="p-capstack__tier-amt">$23.3M</div>
+              <div class="p-capstack__tier-pct">48.5% of cost</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--p-gray);margin-top:var(--sp-3);">Indicative split per v6 underwriting. Final structure subject to lender commitment.</p>
+      </div>
+
+      <div>
+        <h5>Sources &amp; uses</h5>
+        <div class="asset-stat"><span class="asset-stat__label">Acquisition Price</span><span class="asset-stat__val">$47,250,000</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Per Square Foot</span><span class="asset-stat__val">$579 / sf</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Closing Costs</span><span class="asset-stat__val">$300,000</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Acquisition Fee</span><span class="asset-stat__val">$472,500 (1%)</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">Total Acquisition Cost</span><span class="asset-stat__val">$48,022,500</span></div>
+        <div class="asset-stat"><span class="asset-stat__label">3rd Floor Build-Out</span><span class="asset-stat__val">$75–85/sf</span></div>
+        <div class="asset-stat" style="border-top:2px solid var(--p-navy);padding-top:var(--sp-4);"><span class="asset-stat__label">Targeted Exit Value</span><span class="asset-stat__val" style="color:var(--p-navy);">$71.2M</span></div>
+      </div>
+    </div>
+
+    <h5 style="margin-top:var(--sp-8);" data-reveal>24-month execution timeline</h5>
+    <p style="font-size:13px;color:var(--p-gray);margin-top:-4px;" data-reveal>Click any milestone to see the detail.</p>
+    <div class="p-timeline" id="timeline" data-reveal>
+      <div class="p-timeline__track"></div>
+      <div class="p-timeline__progress" id="timeline-progress" style="width:8%;"></div>
+      <div class="p-timeline__milestones">
+        <button class="p-timeline__step p-timeline__step--done p-timeline__step--current p-timeline__step--active" data-step="0">
+          <div class="p-timeline__dot"></div>
+          <div class="p-timeline__date">Q2 2026</div>
+          <div class="p-timeline__label">Close acquisition</div>
+        </button>
+        <button class="p-timeline__step" data-step="1">
+          <div class="p-timeline__dot"></div>
+          <div class="p-timeline__date">Q3 2026</div>
+          <div class="p-timeline__label">3rd floor build-out</div>
+        </button>
+        <button class="p-timeline__step" data-step="2">
+          <div class="p-timeline__dot"></div>
+          <div class="p-timeline__date">Q1 2027</div>
+          <div class="p-timeline__label">3rd floor lease-up</div>
+        </button>
+        <button class="p-timeline__step" data-step="3">
+          <div class="p-timeline__dot"></div>
+          <div class="p-timeline__date">Q3 2027</div>
+          <div class="p-timeline__label">Mark-to-market existing</div>
+        </button>
+        <button class="p-timeline__step" data-step="4">
+          <div class="p-timeline__dot"></div>
+          <div class="p-timeline__date">Q2 2028</div>
+          <div class="p-timeline__label">Disposition / refi</div>
+        </button>
+      </div>
+
+      <!-- Expandable detail panel — populated by JS based on which step is active -->
+      <div class="p-timeline__details is-active" id="timeline-details">
+        <div class="p-timeline__details-header">
+          <span class="p-timeline__details-date" id="td-date">Q2 2026</span>
+          <h5 class="p-timeline__details-title" id="td-title">Close acquisition</h5>
+        </div>
+        <div class="p-timeline__details-body" id="td-body">
+          <p>Pendulum closes on the off-market loan acquisition at $47.25M ($579/sf). Senior debt and seller financing fund concurrently. Title transfers and Pendulum becomes the senior lender on the building.</p>
+          <ul>
+            <li>Wire LP equity contributions to escrow</li>
+            <li>Senior debt commitment finalized with selected lender</li>
+            <li>Seller-financing structured note executed</li>
+            <li>Reserves funded for working capital and TI/LC</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= SPONSOR ======= -->
+<section class="p-section" id="sponsor">
+  <div class="p-container" style="max-width:820px;">
+    <span class="p-eyebrow" data-reveal>The Sponsor</span>
+    <h3 data-reveal>Pendulum Property Partners</h3>
+    <p data-reveal>
+      Pendulum owns, operates, develops, and manages over 2 million square feet of office, retail, and industrial
+      product across Southern California, San Diego, and Phoenix. The firm focuses on opportunistic and core-plus
+      assets where its in-house team can create value through repositioning, renovation, and disciplined asset
+      management.
+    </p>
+
+    <div class="p-grid p-grid--3" style="margin-top:var(--sp-6);" data-reveal>
+      <div>
+        <div class="p-stat__num" style="font-size:40px;">2M+</div>
+        <div class="p-stat__label">Sq Ft Managed</div>
+      </div>
+      <div>
+        <div class="p-stat__num" style="font-size:40px;">9</div>
+        <div class="p-stat__label">Active Properties</div>
+      </div>
+      <div>
+        <div class="p-stat__num" style="font-size:40px;">3</div>
+        <div class="p-stat__label">Past Properties</div>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--sp-7);padding-top:var(--sp-6);border-top:1px solid var(--color-border);" data-reveal>
+      <h5>Track record — selected portfolio</h5>
+      <p style="font-size:13px;color:var(--p-gray);">A sample of Pendulum's owned and managed properties across Southern California, San Diego, and Phoenix.</p>
+      <div class="p-portfolio">
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/liberty-station.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">Liberty Station</div>
+            <div class="p-portfolio__meta">San Diego · Mixed-Use</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/stonecrest.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">Stonecrest</div>
+            <div class="p-portfolio__meta">San Diego · Office</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/peters-landing.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">Peter's Landing</div>
+            <div class="p-portfolio__meta">Orange County · Mixed-Use</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/505-n-brand.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">505 N Brand</div>
+            <div class="p-portfolio__meta">Los Angeles · Mixed-Use</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/the-mix.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">The Mix</div>
+            <div class="p-portfolio__meta">Los Angeles · Office</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/culver-connect.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">Culver Connect</div>
+            <div class="p-portfolio__meta">Los Angeles · Office</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/jamboree-business-ctr.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">Jamboree Business Center</div>
+            <div class="p-portfolio__meta">Orange County · Office</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/axis.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">AXIS</div>
+            <div class="p-portfolio__meta">Orange County · Office</div>
+          </div>
+        </div>
+        <div class="p-portfolio__item">
+          <div class="p-portfolio__media" style="background-image:url('assets/portfolio/2901-w-alameda.jpg');"></div>
+          <div class="p-portfolio__body">
+            <div class="p-portfolio__name">2901 W. Alameda</div>
+            <div class="p-portfolio__meta">Los Angeles · Office</div>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:var(--sp-3);font-size:12px;color:var(--p-gray);"><a href="https://pendulumpp.com/properties" style="color:var(--p-navy);font-weight:bold;">View Pendulum's full portfolio →</a></p>
+    </div>
+
+    <div style="margin-top:var(--sp-7);padding-top:var(--sp-6);border-top:1px solid var(--color-border);" data-reveal>
+      <h5>Deal team</h5>
+      <p style="margin-top:var(--sp-3);">
+        <strong>Kevin Hayes</strong> · CEO, Pendulum Property Partners <br>
+        <a href="mailto:khayes@pendulumpp.com">khayes@pendulumpp.com</a> · 949.939.2839 · San Juan Capistrano
+      </p>
+      <p>
+        <strong>Dan Wagman</strong> · Partner, Los Angeles <br>
+        <a href="mailto:dwagman@pendulumpp.com">dwagman@pendulumpp.com</a> · 310.490.2523
+      </p>
+      <p>
+        <strong>Xander Echt</strong> · Senior Associate, Los Angeles <br>
+        <a href="mailto:xecht@pendulumpp.com">xecht@pendulumpp.com</a> · 224.343.0353
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ======= FAQ ======= -->
+<section class="p-section p-section--alt" id="faq">
+  <div class="p-container" style="max-width:820px;">
+    <span class="p-eyebrow" data-reveal>Frequently Asked</span>
+    <h3 data-reveal>Common questions</h3>
+
+    <div class="p-faq" style="margin-top:var(--sp-6);" data-reveal>
+      <div class="p-faq__item">
+        <button class="p-faq__q" aria-expanded="false" onclick="this.parentElement.classList.toggle('is-open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('is-open'))">
+          What's the minimum investment? <span class="p-faq__icon"></span>
+        </button>
+        <div class="p-faq__a"><div class="p-faq__a-inner">$50,000 minimum for this round. The full memo includes documentation requirements and the subscription process.</div></div>
+      </div>
+      <div class="p-faq__item">
+        <button class="p-faq__q" aria-expanded="false" onclick="this.parentElement.classList.toggle('is-open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('is-open'))">
+          How is this different from buying the building outright? <span class="p-faq__icon"></span>
+        </button>
+        <div class="p-faq__a"><div class="p-faq__a-inner">We're acquiring the existing senior loan at 88¢ on the dollar — meaning we buy the lender's position rather than the equity. If the borrower performs, we collect interest. If they don't, we have a clear path to ownership at our discounted basis. Either outcome is structured to deliver the targeted return.</div></div>
+      </div>
+      <div class="p-faq__item">
+        <button class="p-faq__q" aria-expanded="false" onclick="this.parentElement.classList.toggle('is-open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('is-open'))">
+          What are the biggest risks? <span class="p-faq__icon"></span>
+        </button>
+        <div class="p-faq__a"><div class="p-faq__a-inner">Three to underwrite carefully: (1) Office market sentiment in San Francisco continues to evolve — though Jackson Square has materially outperformed. (2) Re-leasing the 3rd floor at projected rents requires market activity to continue improving. (3) Exit cap rate compression to 6.50% assumes continued capital-markets thaw. The downside scenario assumes a 12-month hold extension and elevated cap rates — we still target a positive return in that case.</div></div>
+      </div>
+      <div class="p-faq__item">
+        <button class="p-faq__q" aria-expanded="false" onclick="this.parentElement.classList.toggle('is-open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('is-open'))">
+          When are distributions made? <span class="p-faq__icon"></span>
+        </button>
+        <div class="p-faq__a"><div class="p-faq__a-inner">Quarterly distributions of available cash flow during the hold, plus a capital-event distribution at refinance or sale. Specific waterfall terms are detailed in the offering memo.</div></div>
+      </div>
+      <div class="p-faq__item">
+        <button class="p-faq__q" aria-expanded="false" onclick="this.parentElement.classList.toggle('is-open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('is-open'))">
+          Is this open to non-accredited investors? <span class="p-faq__icon"></span>
+        </button>
+        <div class="p-faq__a"><div class="p-faq__a-inner">No — this offering is limited to accredited investors as defined under Regulation D. We'll verify accreditation as part of the subscription process.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CTA BAND ======= -->
+<section class="p-cta-band" id="contact">
+  <span class="p-eyebrow p-eyebrow--accent">Next Step</span>
+  <h2>Ready to take a closer look?</h2>
+  <p style="max-width:560px;margin:0 auto var(--sp-5);color:rgba(255,255,255,0.85);">
+    Request the offering memo and we'll set up a 30-minute walkthrough of the underwriting.
+  </p>
+  <a class="p-btn" href="#" onclick="event.preventDefault(); openLeadModal();" style="background:var(--p-cyan);border-color:var(--p-cyan);">Request Materials</a>
+</section>
+
+<!-- ======= IMPORTANT DISCLOSURES (referenced by ¹/² footnotes throughout) ======= -->
+<section class="p-section p-section--alt" id="disclosures" style="padding-top:var(--sp-7);padding-bottom:var(--sp-7);">
+  <div class="p-container">
+    <span class="p-eyebrow">Important Disclosures</span>
+    <h5 style="margin-top:var(--sp-3);">Read before evaluating this offering.</h5>
+
+    <div class="p-disclosure">
+      <strong>No Offer of Securities</strong>
+      This page is for informational purposes only and does not constitute an offer to sell or a solicitation of an
+      offer to buy any security. Any such offering will be made only by means of a private placement memorandum
+      ("PPM") and related subscription documents that will be furnished to qualified investors upon request.
+      Statements contained herein are qualified in their entirety by reference to the PPM. In the event of any
+      inconsistency between this page and the PPM, the PPM controls.
+    </div>
+
+    <div class="p-disclosure">
+      <strong>Forward-Looking Statements</strong>
+      This page contains forward-looking statements, including but not limited to projections of target returns,
+      target multiples, hold period, exit value, cash flow, occupancy, mark-to-market rents, and capital-stack
+      assumptions. These statements are based on Pendulum's current assumptions and the underwriting model identified
+      as version 6 (subject to change). Forward-looking statements are inherently uncertain and involve risks. Actual
+      results may differ materially from those projected due to a wide range of factors, including but not limited to
+      capital-markets conditions, interest-rate movements, leasing-market dynamics, tenant performance, construction
+      costs, regulatory changes, and other factors detailed in the PPM. <strong style="font-family:inherit;font-size:inherit;letter-spacing:0;text-transform:none;color:var(--color-text-strong);display:inline;">No
+      forward-looking statement should be read as a guarantee of any future result.</strong>
+    </div>
+
+    <div class="p-disclosure">
+      <strong>Target Returns Are Not Guarantees</strong>
+      All references to "target," "projected," "underwritten," "illustrative," or similar terms — including the
+      36.5% target levered return and 1.84× target multiple — are estimates only. They are not commitments,
+      guarantees, or representations of expected returns. Past performance of Pendulum or its affiliates is not
+      indicative of future results. Real estate investments involve substantial risk, including the potential loss
+      of principal.
+    </div>
+
+    <div class="p-disclosure">
+      <strong>Accredited Investors Only</strong>
+      This offering is limited to accredited investors as defined under Rule 501(a) of Regulation D promulgated
+      under the Securities Act of 1933. Accreditation will be verified as part of the subscription process.
+      Non-accredited investors are not eligible to participate.
+    </div>
+
+    <div class="p-disclosure">
+      <strong>No Tax, Legal, or Investment Advice</strong>
+      Pendulum is not your tax, legal, or investment advisor. Prospective investors should consult their own
+      advisors before making any decision regarding this offering.
+    </div>
+
+    <div class="p-disclosure">
+      <strong>Confidentiality</strong>
+      The information contained on this page is confidential and intended only for the recipient. Reproduction,
+      forwarding, or distribution to any unauthorized person is prohibited.
+    </div>
+  </div>
+</section>
+
+<!-- ======= FOOTER ======= -->
+<footer class="p-footer">
+  <div class="p-container p-footer__inner">
+    <div style="display:flex;align-items:center;gap:var(--sp-4);">
+      <img src="assets/logo-white.svg" alt="Pendulum Property Partners" style="height:56px;">
+    </div>
+    <nav style="display:flex;gap:var(--sp-5);">
+      <a href="https://pendulumpp.com/about-us">About</a>
+      <a href="https://pendulumpp.com/properties">Properties</a>
+      <a href="#disclosures">Disclosures</a>
+      <a href="mailto:khayes@pendulumpp.com">Contact</a>
+    </nav>
+    <div class="p-footer__copy">© 2026 Pendulum Property Partners.</div>
+  </div>
+  <div class="p-container" style="margin-top:var(--sp-4);font-size:11px;color:rgba(255,255,255,0.55);max-width:880px;line-height:1.6;">
+    <strong style="color:rgba(255,255,255,0.85);font-family:var(--font-eyebrow);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:6px;">Confidential · For accredited investors only · Not an offer to sell securities</strong>
+    See Important Disclosures above for full forward-looking-statement, target-return, and Regulation D language.
+    Any decision to invest must be made on the basis of the offering memorandum and subscription documents alone.
+  </div>
+</footer>
+
+<!-- ======= STICKY OFFERING SUMMARY (Theme A) ======= -->
+<aside class="p-summary" id="summary" aria-label="Offering summary">
+  <button class="p-summary__close" onclick="window.toggleSummary(true)" aria-label="Hide offering summary" title="Hide">−</button>
+  <div class="p-summary__title">Offering Summary</div>
+  <div class="p-summary__row"><span class="p-summary__label">Raise</span><span class="p-summary__val">$17.2M</span></div>
+  <div class="p-summary__row"><span class="p-summary__label">Hold</span><span class="p-summary__val">24 mo</span></div>
+  <div class="p-summary__row"><span class="p-summary__label">Target Return</span><span class="p-summary__val">36.5%<sup class="p-fnref">¹</sup></span></div>
+  <div class="p-summary__row"><span class="p-summary__label">Target Multiple</span><span class="p-summary__val">1.84×<sup class="p-fnref">¹</sup></span></div>
+  <div class="p-summary__row"><span class="p-summary__label">Min</span><span class="p-summary__val">$50K</span></div>
+  <a class="p-btn" href="#" onclick="event.preventDefault(); openLeadModal();">Request Memo</a>
+  <span class="p-caveat" style="margin-top:var(--sp-3);text-align:center;">All targets · Not guarantees</span>
+</aside>
+
+<!-- Collapsed-state handle — appears on the right edge when summary is hidden -->
+<button class="p-summary__handle" id="summary-handle" onclick="window.toggleSummary(false)" aria-label="Show offering summary">Offering Summary</button>
+
+<!-- ======= MOBILE STICKY CTA (Theme D) ======= -->
+<div class="p-sticky-cta">
+  <div class="p-sticky-cta__terms">$17.2M · 24mo<strong>36.5% Target<sup style="font-size:60%;vertical-align:super;">¹</sup> · 1.84×</strong></div>
+  <a class="p-btn" href="#" onclick="event.preventDefault(); openLeadModal();" style="background:var(--p-cyan);border-color:var(--p-cyan);padding:10px 16px;font-size:11px;">Request Memo</a>
+</div>
+
+<!-- ======= LEAD MODAL (Theme D — accreditation gate) ======= -->
+<div class="p-modal" id="lead-modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+  <div class="p-modal__panel">
+    <button class="p-modal__close" onclick="closeLeadModal()" aria-label="Close">×</button>
+    <div class="p-modal__progress"><span id="prog-1" class="is-done"></span><span id="prog-2"></span><span id="prog-3"></span></div>
+
+    <!-- Step 1: accreditation -->
+    <div class="p-modal__step is-active" data-step="1">
+      <div class="p-modal__title" id="modal-title">Are you an accredited investor?</div>
+      <p style="color:var(--p-gray);margin-bottom:var(--sp-5);font-size:14px;">
+        This offering is limited to accredited investors as defined under SEC Regulation D
+        (income &gt; $200K solo or &gt; $300K joint, or net worth &gt; $1M excluding primary residence).
+      </p>
+      <div class="p-modal__choice">
+        <button onclick="leadStep(2, true)">Yes, I am</button>
+        <button onclick="leadStep('blocked')">Not at this time</button>
+      </div>
+    </div>
+
+    <!-- Step 2: contact info -->
+    <div class="p-modal__step" data-step="2">
+      <div class="p-modal__title">Get the offering memo</div>
+      <p style="color:var(--p-gray);margin-bottom:var(--sp-5);font-size:14px;">
+        Pendulum's deal team will follow up within one business day with the memo and a 30-minute walkthrough.
+      </p>
+      <form id="lead-form" onsubmit="event.preventDefault(); submitLead();">
+        <div class="p-modal__field">
+          <label class="p-modal__label" for="lead-name">Name</label>
+          <input class="p-modal__input" type="text" id="lead-name" required>
+        </div>
+        <div class="p-modal__field">
+          <label class="p-modal__label" for="lead-email">Email</label>
+          <input class="p-modal__input" type="email" id="lead-email" required>
+        </div>
+        <div class="p-modal__field">
+          <label class="p-modal__label" for="lead-amount">Indicative check size (optional)</label>
+          <input class="p-modal__input" type="text" id="lead-amount" placeholder="$250,000">
+        </div>
+        <label class="p-modal__check">
+          <input type="checkbox" id="lead-ack" required>
+          <span>I understand this page is informational only and does not constitute an offer to sell securities. I have reviewed the risk factors above.</span>
+        </label>
+        <button type="submit" class="p-btn p-btn--no-arrow" style="width:100%;">Request the memo</button>
+      </form>
+    </div>
+
+    <!-- Step 3: confirmation -->
+    <div class="p-modal__step" data-step="3">
+      <div class="p-modal__title">Thank you.</div>
+      <p style="color:var(--p-gray);margin-bottom:var(--sp-5);">
+        Your request has been logged. The Pendulum team will follow up within one business day.
+      </p>
+      <p style="font-size:13px;color:var(--p-gray);">
+        Questions in the meantime? <a href="mailto:khayes@pendulumpp.com">khayes@pendulumpp.com</a>
+      </p>
+    </div>
+
+    <!-- Blocked state for non-accredited -->
+    <div class="p-modal__step" data-step="blocked">
+      <div class="p-modal__title">We appreciate your interest.</div>
+      <p style="color:var(--p-gray);">
+        This offering is limited to accredited investors. If your situation changes, we'd be glad to share future
+        opportunities — drop your email at <a href="mailto:khayes@pendulumpp.com">khayes@pendulumpp.com</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ======= CONFIG (single source of truth — edit this to update the page) ======= -->
+<script type="application/json" id="deal-config">
+{
+  "deal": {
+    "name": "747 Front St",
+    "name_short": "747 Front",
+    "name_part_a": "747",
+    "name_part_b": "Front St",
+    "address": "747 Front Street, San Francisco, CA",
+    "city": "San Francisco",
+    "submarket": "Jackson Square",
+    "asset_class": "Office",
+    "size_sf": 81606
+  },
+  "hero": {
+    "eyebrow": "Investor Offering · San Francisco",
+    "subhead": "An off-market loan acquisition in Jackson Square — buying scale in San Francisco's most supply-constrained submarket at 88¢ on the dollar."
+  },
+  "raise": {
+    "size_label": "$17.2M",
+    "size_total": 17203292,
+    "min_investment": 50000,
+    "max_in_round": 2000000,
+    "structure": "Loan acquisition with seller financing"
+  },
+  "returns": {
+    "base_case": {
+      "irr": 0.3645,
+      "multiple": 1.84,
+      "exit_cap": 0.0650,
+      "label": "Base"
+    },
+    "upside_case": {
+      "irr": 0.4774,
+      "multiple": 2.15,
+      "exit_cap": 0.0600,
+      "label": "Upside"
+    },
+    "downside_case": {
+      "irr": 0.2577,
+      "multiple": 1.97,
+      "exit_cap": 0.0700,
+      "label": "Downside"
+    },
+    "hold_months": 24
+  },
+  "asset": {
+    "in_place_occupancy": 0.737,
+    "stabilized_occupancy": 0.960,
+    "walt_years": 4.5,
+    "going_in_cap": 0.0417,
+    "untrended_mtm_yield": 0.080,
+    "stabilized_yield_on_cost": 0.0989
+  },
+  "acquisition": {
+    "price": 47250000,
+    "psf": 579,
+    "closing_costs": 300000,
+    "acq_fee": 472500,
+    "total_cost": 48022500,
+    "close_date": "2026-06-30",
+    "exit_date": "2028-06-30"
+  },
+  "tenants": [
+    { "name": "Minted",                "type": "E-Commerce",       "note": "2-yr renewal" },
+    { "name": "BraunHagey & Borden",   "type": "Law",              "note": "Anchor" },
+    { "name": "IVP",                   "type": "Venture Capital",  "note": "Long WALT" },
+    { "name": "Empower Gym",           "type": "Fitness",          "note": "9% NRA" }
+  ],
+  "team": [
+    { "name": "Kevin Hayes",  "title": "CEO",              "email": "khayes@pendulumpp.com",  "phone": "949.939.2839" },
+    { "name": "Dan Wagman",   "title": "Partner",          "email": "dwagman@pendulumpp.com", "phone": "310.490.2523" },
+    { "name": "Xander Echt",  "title": "Senior Associate", "email": "xecht@pendulumpp.com",   "phone": "224.343.0353" }
+  ]
+}
+</script>
+
+<!-- ======= JS ======= -->
+<script>
+(() => {
+  // Read config (used by interactive components)
+  const CONFIG = JSON.parse(document.getElementById('deal-config').textContent);
+  window.DEAL = CONFIG; // expose for debugging
+
+  // ----- Data binding -----
+  // Every element with [data-bind="path.to.value"] gets its text replaced.
+  // Supports formatters via [data-format]: pct1, pct0, money, mult, mo, date.
+  const fmt = {
+    pct1:  v => (v * 100).toFixed(1) + '%',
+    pct0:  v => Math.round(v * 100) + '%',
+    money: v => '$' + Math.round(v).toLocaleString('en-US'),
+    moneyM: v => '$' + (v / 1e6).toFixed(1) + 'M',
+    mult:  v => v.toFixed(2) + '×',
+    mo:    v => v + ' mo',
+    psf:   v => '$' + v + '/sf',
+    sf:    v => v.toLocaleString('en-US') + ' sf',
+    date:  v => new Date(v).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+    raw:   v => String(v)
+  };
+  const path = (obj, p) => p.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const val = path(CONFIG, el.dataset.bind);
+    if (val == null) return;
+    const f = fmt[el.dataset.format] || fmt.raw;
+    el.textContent = f(val);
+  });
+  // [data-bind-html] writes raw text without HTML escaping (useful for plain
+  // sentences that may contain typographic characters).
+  document.querySelectorAll('[data-bind-html]').forEach(el => {
+    const val = path(CONFIG, el.dataset.bindHtml);
+    if (val != null) el.textContent = val;
+  });
+
+  // ----- Special bindings -----
+  // The hero H1 is a partial-stroke headline: "<solid> <b>outlined</b>".
+  const h1 = document.getElementById('hero-h1');
+  if (h1) h1.innerHTML = `${CONFIG.deal.name_part_a} <b>${CONFIG.deal.name_part_b}</b>`;
+
+  // ----- Set page title + meta from config -----
+  document.title = `${CONFIG.deal.name} — Pendulum Property Partners`;
+
+  // ----- Header scroll state -----
+  const header = document.getElementById('site-header');
+  const progress = document.getElementById('progress');
+  const summary = document.getElementById('summary');
+  const summaryHandle = document.getElementById('summary-handle');
+
+  // Restore collapsed preference from previous session
+  let summaryUserHidden = false;
+  try { summaryUserHidden = localStorage.getItem('pendulum_summary_hidden') === '1'; } catch(e) {}
+
+  // Toggle the offering summary card. true = hide, false = show.
+  window.toggleSummary = (hide) => {
+    summaryUserHidden = !!hide;
+    try { localStorage.setItem('pendulum_summary_hidden', hide ? '1' : '0'); } catch(e) {}
+    applySummaryVisibility(window.scrollY);
+  };
+
+  const applySummaryVisibility = (y) => {
+    const pastHero = y > 700;
+    if (summaryUserHidden) {
+      summary.classList.remove('is-visible');
+      summary.classList.add('is-collapsed');
+      summaryHandle.classList.toggle('is-visible', pastHero);
+      document.body.classList.remove('summary-visible');
+    } else {
+      summary.classList.remove('is-collapsed');
+      summary.classList.toggle('is-visible', pastHero);
+      summaryHandle.classList.remove('is-visible');
+      document.body.classList.toggle('summary-visible', pastHero);
+    }
+  };
+
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.classList.toggle('p-header--scrolled', y > 100);
+    applySummaryVisibility(y);
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = docH > 0 ? Math.min(100, (y / docH) * 100) + '%' : '0';
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+
+  // ----- Light parallax on hero photo -----
+  const heroBg = document.getElementById('hero-bg');
+  if (heroBg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < 800) heroBg.style.transform = `translateY(${y * 0.3}px) scale(${1 + y * 0.0002})`;
+    }, { passive: true });
+  }
+
+  // ----- Scroll reveals (IntersectionObserver) -----
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-revealed'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // ----- Animated counters -----
+  const counters = document.querySelectorAll('[data-counter]');
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.counter);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = (target * eased).toFixed(decimals);
+        el.textContent = prefix + v + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterObs.observe(c));
+
+  // ----- Returns calculator with cap-rate sensitivity slider -----
+  // Underwriting v6 sensitivity table — Levered IRR / Multiple at each exit cap.
+  // Slider value (575-700) maps to cap rate (5.75%-7.00%). Linear interpolation
+  // between the closest two anchors gives a continuous reading.
+  const SENSITIVITY = [
+    { cap: 5.75, irr: 0.5377, mult: 2.32 },
+    { cap: 6.00, irr: 0.4774, mult: 2.15 },
+    { cap: 6.25, irr: 0.4198, mult: 1.99 },
+    { cap: 6.50, irr: 0.3645, mult: 1.84 },  // base case
+    { cap: 6.75, irr: 0.3112, mult: 1.70 },
+    { cap: 7.00, irr: 0.2580, mult: 1.55 }
+  ];
+
+  const calcInput = document.getElementById('calc-input');
+  const calcIRR = document.getElementById('calc-irr');
+  const calcMultiple = document.getElementById('calc-multiple');
+  const calcProfit = document.getElementById('calc-profit');
+  const capSlider = document.getElementById('cap-slider');
+  const capValue = document.getElementById('cap-value');
+
+  const fmtMoney = (n) => '$' + Math.round(n).toLocaleString('en-US');
+  const fmtPct = (n) => (n * 100).toFixed(1) + '%';
+  const fmtMult = (n) => n.toFixed(2) + '×';
+
+  // Linear interpolate IRR/multiple at any cap rate within the table range
+  const interpolate = (cap) => {
+    if (cap <= SENSITIVITY[0].cap) return SENSITIVITY[0];
+    if (cap >= SENSITIVITY[SENSITIVITY.length - 1].cap) return SENSITIVITY[SENSITIVITY.length - 1];
+    for (let i = 0; i < SENSITIVITY.length - 1; i++) {
+      const a = SENSITIVITY[i], b = SENSITIVITY[i + 1];
+      if (cap >= a.cap && cap <= b.cap) {
+        const t = (cap - a.cap) / (b.cap - a.cap);
+        return {
+          cap: cap,
+          irr: a.irr + (b.irr - a.irr) * t,
+          mult: a.mult + (b.mult - a.mult) * t
+        };
+      }
+    }
+    return SENSITIVITY[3]; // fallback to base
+  };
+
+  const updateCalc = () => {
+    const investment = parseFloat(calcInput.value) || 0;
+    const cap = parseInt(capSlider.value, 10) / 100; // 575 -> 5.75
+    const data = interpolate(cap);
+    capValue.textContent = cap.toFixed(2) + '%';
+    capSlider.setAttribute('aria-valuenow', cap.toFixed(2));
+    calcIRR.textContent = fmtPct(data.irr);
+    calcMultiple.textContent = fmtMult(data.mult);
+    calcProfit.textContent = fmtMoney(investment * (data.mult - 1));
+  };
+
+  calcInput.addEventListener('input', updateCalc);
+  capSlider.addEventListener('input', updateCalc);
+  updateCalc();
+
+  // ----- Interactive timeline -----
+  // Each milestone, when clicked, populates the detail panel below the strip.
+  const TIMELINE = [
+    {
+      date: 'Q2 2026',
+      title: 'Close acquisition',
+      body: `<p>Pendulum closes on the off-market loan acquisition at $47.25M ($579/sf). Senior debt and seller
+        financing fund concurrently. Title transfers and Pendulum becomes the senior lender on the building.</p>
+        <ul>
+          <li>Wire LP equity contributions to escrow</li>
+          <li>Senior debt commitment finalized with selected lender</li>
+          <li>Seller-financing structured note executed</li>
+          <li>Reserves funded for working capital and TI/LC</li>
+        </ul>`
+    },
+    {
+      date: 'Q3 2026',
+      title: '3rd floor build-out',
+      body: `<p>Spend $75–$85/sf to turn-key the 3rd floor that Minted gave back. Add furniture so the
+        space is move-in ready — a differentiated offering in a Jackson Square submarket short on
+        plug-and-play options.</p>
+        <ul>
+          <li>Engage architect and contractor; furniture spec finalized</li>
+          <li>Quarterly LP update goes out with budget vs. actual</li>
+          <li>Marketing tour begins ahead of substantial completion</li>
+        </ul>`
+    },
+    {
+      date: 'Q1 2027',
+      title: '3rd floor lease-up',
+      body: `<p>Sign a new tenant for the turn-key 3rd floor at projected market rents. This is the primary
+        value-add lever — moving from ±75% in-place occupancy toward stabilized 96%.</p>
+        <ul>
+          <li>Lease executed at underwritten rate (or above)</li>
+          <li>Free-rent burn-off period begins</li>
+          <li>Cap rate compression begins to be reflected in interim valuation</li>
+        </ul>`
+    },
+    {
+      date: 'Q3 2027',
+      title: 'Mark-to-market existing leases',
+      body: `<p>As remaining leases roll, push them to market — including the Minted 2-year renewal that
+        expires during the hold. Untrended mark-to-market yield on the building is 8% based on current
+        market comps.</p>
+        <ul>
+          <li>Lease renewals negotiated at market rates</li>
+          <li>Stabilized NOI growth approaches the 9.89% yield-on-cost target</li>
+          <li>Property tax reassessment timing managed</li>
+        </ul>`
+    },
+    {
+      date: 'Q2 2028',
+      title: 'Disposition or refi',
+      body: `<p>Two paths at the end of the 24-month hold, each evaluated against then-current market
+        conditions:</p>
+        <ul>
+          <li><strong>Sell</strong> at a 6.50% exit cap rate to a long-term holder; net sales proceeds
+            ±$66M return capital + the targeted return.</li>
+          <li><strong>Refinance</strong> into permanent debt and continue to hold (the "NB" 5-year scenario
+            shows additional 8.92% target return for an extended hold).</li>
+        </ul>
+        <p>The decision is made in coordination with the LP base on a no-pressure basis.</p>`
+    }
+  ];
+
+  const timelineSteps = document.querySelectorAll('.p-timeline__step');
+  const tdDate = document.getElementById('td-date');
+  const tdTitle = document.getElementById('td-title');
+  const tdBody = document.getElementById('td-body');
+  const tdProgress = document.getElementById('timeline-progress');
+
+  const setTimelineStep = (idx) => {
+    timelineSteps.forEach((s, i) => {
+      s.classList.toggle('p-timeline__step--active', i === idx);
+      s.classList.toggle('p-timeline__step--done', i <= idx);
+    });
+    const m = TIMELINE[idx];
+    if (m && tdDate && tdTitle && tdBody) {
+      tdDate.textContent = m.date;
+      tdTitle.textContent = m.title;
+      tdBody.innerHTML = m.body;
+    }
+    // Progress bar reflects how far along we are
+    if (tdProgress) {
+      const pct = (idx / (TIMELINE.length - 1)) * 100;
+      tdProgress.style.width = `calc(${pct}% - 1px)`;
+    }
+  };
+  timelineSteps.forEach((s, i) => s.addEventListener('click', () => setTimelineStep(i)));
+
+  // ----- Lead modal -----
+  const modal = document.getElementById('lead-modal');
+  window.openLeadModal = () => {
+    modal.classList.add('is-open');
+    leadStep(1, false);
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => modal.querySelector('.p-modal__step.is-active button')?.focus(), 50);
+  };
+  window.closeLeadModal = () => {
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  };
+  window.leadStep = (n, advance) => {
+    document.querySelectorAll('.p-modal__step').forEach(s => s.classList.remove('is-active'));
+    modal.querySelector(`[data-step="${n}"]`).classList.add('is-active');
+    document.getElementById('prog-1').classList.toggle('is-done', n !== 'blocked');
+    document.getElementById('prog-2').classList.toggle('is-done', n === 2 || n === 3);
+    document.getElementById('prog-3').classList.toggle('is-done', n === 3);
+  };
+  window.submitLead = () => {
+    const data = {
+      name: document.getElementById('lead-name').value,
+      email: document.getElementById('lead-email').value,
+      amount: document.getElementById('lead-amount').value,
+      deal: CONFIG.deal.name,
+      timestamp: new Date().toISOString()
+    };
+    // For now: log + email fallback. Replace with CRM webhook when available.
+    console.log('Lead capture:', data);
+    // Mailto fallback so the team gets notified even without a backend
+    const body = encodeURIComponent(
+      `New investor inquiry on ${CONFIG.deal.name}\n\n` +
+      `Name: ${data.name}\nEmail: ${data.email}\nIndicative check size: ${data.amount || '(not provided)'}\n` +
+      `Source: ${window.location.href}\nTimestamp: ${data.timestamp}\n`
+    );
+    const subject = encodeURIComponent(`[${CONFIG.deal.name}] New investor inquiry — ${data.name}`);
+    setTimeout(() => {
+      window.open(`mailto:khayes@pendulumpp.com?subject=${subject}&body=${body}`, '_blank');
+    }, 200);
+    leadStep(3, true);
+  };
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeLeadModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLeadModal(); });
+
+  // ----- Lightbox (simple) -----
+  window.openLightbox = (el) => {
+    const bg = el.style.backgroundImage;
+    if (!bg || bg === 'none') return;
+    const url = bg.match(/url\(["']?(.+?)["']?\)/)?.[1];
+    if (!url) return;
+    const lb = document.createElement('div');
+    lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:40px;';
+    lb.innerHTML = `<img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;">`;
+    lb.onclick = () => lb.remove();
+    document.body.appendChild(lb);
+  };
+
+  // ----- Lazy-load Leaflet map only when section enters viewport -----
+  let mapInitialized = false;
+  const initMap = () => {
+    if (mapInitialized || !window.L) return;
+    mapInitialized = true;
+
+    const PROPERTY = [37.7976, -122.4019];
+    const map = window.L.map('map', { scrollWheelZoom: false }).setView(PROPERTY, 15);
+
+    // Light, neutral tile style — Carto Positron
+    window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CartoDB',
+      maxZoom: 19,
+      subdomains: 'abcd'
+    }).addTo(map);
+
+    // Approximate Jackson Square submarket boundary
+    const submarketPolygon = [
+      [37.7995, -122.4015],
+      [37.7995, -122.4080],
+      [37.7945, -122.4080],
+      [37.7935, -122.4045],
+      [37.7945, -122.4015]
+    ];
+    window.L.polygon(submarketPolygon, {
+      color: '#215587',
+      weight: 2,
+      fillColor: '#215587',
+      fillOpacity: 0.10,
+      dashArray: '6, 6'
+    }).addTo(map).bindPopup('<strong>Jackson Square</strong><br>SF\'s most supply-constrained office submarket');
+
+    // Property pin
+    const propertyIcon = window.L.divIcon({
+      className: 'leaflet-property-marker',
+      html: '<div style="width:28px;height:28px;border-radius:50%;background:#009ade;border:4px solid #fff;box-shadow:0 0 0 2px #009ade,0 4px 12px rgba(0,0,0,0.25);"></div>',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    window.L.marker(PROPERTY, { icon: propertyIcon }).addTo(map)
+      .bindPopup('<strong>747 Front Street</strong><br>81,606 sf historic creative office<br>Acquisition basis: $579/sf')
+      .openPopup();
+
+    // Transit markers
+    const transitIcon = window.L.divIcon({
+      className: 'leaflet-transit-marker',
+      html: '<div style="width:14px;height:14px;border-radius:50%;background:#215587;border:2px solid #fff;box-shadow:0 0 0 1px #215587;"></div>',
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
+    });
+    const TRANSIT = [
+      { coords: [37.7929, -122.3969], label: 'Embarcadero · BART / MUNI' },
+      { coords: [37.7892, -122.4017], label: 'Montgomery St · BART / MUNI' },
+      { coords: [37.7903, -122.3961], label: 'Salesforce Transit Center' }
+    ];
+    TRANSIT.forEach(t => {
+      window.L.marker(t.coords, { icon: transitIcon }).addTo(map).bindPopup('<strong>' + t.label + '</strong>');
+    });
+  };
+
+  // Load Leaflet on demand; intersection-observer triggers init
+  const mapEl = document.getElementById('map');
+  if (mapEl) {
+    const mapObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        if (window.L) { initMap(); }
+        else {
+          const s = document.createElement('script');
+          s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+          s.crossOrigin = '';
+          s.onload = initMap;
+          document.head.appendChild(s);
+        }
+        mapObs.unobserve(e.target);
+      });
+    }, { rootMargin: '200px' });
+    mapObs.observe(mapEl);
+  }
+
+  // ----- Section view tracking (Theme C — basic analytics) -----
+  const sections = document.querySelectorAll('section[id]');
+  const seenSections = new Set();
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !seenSections.has(e.target.id)) {
+        seenSections.add(e.target.id);
+        // Replace this with real analytics call when ready (gtag, plausible, etc.)
+        console.log('[analytics] section viewed:', e.target.id);
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => sectionObs.observe(s));
+
+  // initial render
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
