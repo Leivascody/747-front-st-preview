@@ -2104,6 +2104,10 @@
           </div>
         </div>
         <div class="p-sub-modal__field">
+          <label for="sub-street">Street address</label>
+          <input id="sub-street" name="street_address" type="text" required placeholder="123 Main St" autocomplete="street-address">
+        </div>
+        <div class="p-sub-modal__field">
           <label for="sub-citystatezip">City, State, ZIP</label>
           <input id="sub-citystatezip" name="city_state_zip" type="text" required placeholder="San Francisco, CA 94111">
         </div>
@@ -2136,11 +2140,7 @@
         <div class="p-sub-modal__success-mark">&#10003;</div>
         <h3 class="p-sub-modal__title">Thank you</h3>
         <p class="p-sub-modal__intro">
-          Your indication of interest has been recorded. Dan Wagman will follow up within one business
-          day with subscription documents and a 30-minute walkthrough of the underwriting.
-        </p>
-        <p class="p-sub-modal__legal">
-          Questions in the meantime? <a href="mailto:dwagman@pendulumpp.com">dwagman@pendulumpp.com</a> · 310.490.2523
+          Dan Wagman will follow up with your subscription documents.
         </p>
         <button type="button" id="sub-close-2" class="p-btn p-btn--no-arrow" style="width:100%;margin-top:var(--sp-4);">Close</button>
       </div>
@@ -2188,7 +2188,7 @@
   // to the bound Google Sheet.
   //
   // Replace this URL with the actual deployed Apps Script web-app URL.
-  window.SUBSCRIBE_ENDPOINT = 'REPLACE_WITH_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+  window.SUBSCRIBE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwiGCqsMNPbgw5-UJCnA0VRT-J3IoJUB9-8LiSh4wVzlK5f8Kybe9lFvhB-3aBjHO9C/exec';
 
   const modal      = document.getElementById('sub-modal');
   const backdrop   = modal.querySelector('.p-sub-modal__backdrop');
@@ -2250,11 +2250,12 @@
     const name           = document.getElementById('sub-name').value.trim();
     const phone          = phoneInp.value.trim();
     const email          = document.getElementById('sub-email').value.trim();
+    const street_address = document.getElementById('sub-street').value.trim();
     const city_state_zip = document.getElementById('sub-citystatezip').value.trim();
     const entity         = document.getElementById('sub-entity').value.trim();
     const amount         = parseAmount(amountInp.value);
 
-    if (!name || !phone || !email || !city_state_zip || !entity || !amount) {
+    if (!name || !phone || !email || !street_address || !city_state_zip || !entity || !amount) {
       errorEl.textContent = 'Please fill in every field.';
       return;
     }
@@ -2268,7 +2269,7 @@
     const payload = {
       timestamp: new Date().toISOString(),
       deal: '747 Front St',
-      name, phone, email, city_state_zip, entity, amount,
+      name, phone, email, street_address, city_state_zip, entity, amount,
       source_url: window.location.href
     };
 
@@ -2294,7 +2295,7 @@
       const body    = encodeURIComponent(
         `New subscription interest for 747 Front St\n\n` +
         `Name:      ${name}\nPhone:     ${phone}\nEmail:     ${email}\n` +
-        `Location:  ${city_state_zip}\nEntity:    ${entity}\n` +
+        `Street:    ${street_address}\nLocation:  ${city_state_zip}\nEntity:    ${entity}\n` +
         `Amount:    $${amount.toLocaleString('en-US')}\n\n` +
         `Submitted: ${new Date().toLocaleString()}\nSource:    ${window.location.href}\n`
       );
