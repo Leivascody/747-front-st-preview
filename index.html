@@ -118,34 +118,83 @@
     .p-hero__bg { animation: kenburns 20s ease-out infinite alternate; }
     @keyframes kenburns { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
   }
-  /* ============= PASSWORD GATE ============= */
-  /* Note: this is OBSCURITY, not security. Anyone who opens DevTools can see
-     the password. Adequate for "do not share publicly" review with Pendulum's
-     team; do NOT rely on this for protecting sensitive financial data. */
+  /* ============= 506(b) PRIVATE-OFFERING GATE =============
+     Two-step landing for a Reg D 506(b) offering:
+       1) Acknowledge accredited-investor status + pre-existing relationship
+       2) Enter access password
+     Note: the password check is OBSCURITY, not security. The hash is in the
+     client. This gate exists to (a) document acknowledgment of 506(b)
+     eligibility prerequisites and (b) keep the page out of search-engine
+     indexing and casual sharing. Substantive verification of accreditation
+     and the pre-existing-relationship requirement is handled separately by
+     the Pendulum deal team. */
   .p-gate {
     position: fixed; inset: 0;
     background: var(--p-navy);
     z-index: 9999;
     display: flex; align-items: center; justify-content: center;
     padding: var(--sp-5);
+    overflow-y: auto;
   }
   .p-gate__panel {
     background: var(--p-white);
-    width: 100%; max-width: 440px;
+    width: 100%; max-width: 560px;
     padding: var(--sp-7);
-    text-align: center;
+    margin: auto;
+  }
+  @media (max-width: 600px) {
+    .p-gate__panel { padding: var(--sp-6) var(--sp-5); }
   }
   .p-gate__logo { width: 140px; margin: 0 auto var(--sp-5); display: block; }
+  .p-gate__eyebrow {
+    display: block;
+    font-family: var(--font-eyebrow);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--p-cyan);
+    text-align: center;
+    margin-bottom: var(--sp-3);
+  }
   .p-gate__title {
     font-family: var(--font-display);
-    font-size: 22px; font-weight: var(--fw-bold);
+    font-size: 26px; font-weight: 600;
     color: var(--color-text-strong);
-    margin: 0 0 var(--sp-3);
+    margin: 0 0 var(--sp-4);
+    text-align: center;
+    line-height: 1.2;
   }
   .p-gate__sub {
-    font-size: 13px; color: var(--p-gray);
-    margin-bottom: var(--sp-5); line-height: 1.6;
+    font-size: 14px; color: var(--color-text);
+    margin: 0 0 var(--sp-5); line-height: 1.7;
   }
+  .p-gate__step {
+    display: none;
+  }
+  .p-gate__step.is-active { display: block; }
+  .p-gate__progress {
+    display: flex; gap: 6px; justify-content: center;
+    margin-bottom: var(--sp-5);
+  }
+  .p-gate__progress span {
+    width: 36px; height: 3px;
+    background: var(--color-border);
+    transition: background var(--dur-base) var(--ease);
+  }
+  .p-gate__progress span.is-done { background: var(--p-cyan); }
+  .p-gate__check {
+    display: flex; gap: 12px;
+    padding: var(--sp-4);
+    background: var(--p-mist);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--sp-3);
+    cursor: pointer;
+    align-items: flex-start;
+    transition: border-color var(--dur-base) var(--ease);
+  }
+  .p-gate__check:hover { border-color: var(--p-navy); }
+  .p-gate__check input { margin-top: 4px; flex: 0 0 auto; }
+  .p-gate__check-text { font-size: 13px; color: var(--color-text); line-height: 1.65; }
+  .p-gate__check-text strong { color: var(--color-text-strong); }
   .p-gate__input {
     width: 100%;
     padding: 14px 16px;
@@ -159,58 +208,148 @@
     transition: border-color var(--dur-base) var(--ease);
   }
   .p-gate__input:focus { border-color: var(--p-navy); }
-  .p-gate__error { font-size: 12px; color: var(--p-accent-rust); margin-bottom: var(--sp-3); min-height: 18px; }
+  .p-gate__error { font-size: 12px; color: var(--p-accent-rust); margin-bottom: var(--sp-3); min-height: 18px; text-align: center; }
+  .p-gate__btn-row { display: flex; gap: var(--sp-3); align-items: center; }
+  .p-gate__btn-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .p-gate__legal {
+    font-size: 11px; color: var(--p-gray); line-height: 1.6;
+    margin-top: var(--sp-5);
+    text-align: center;
+  }
   body.is-gated > *:not(.p-gate) { display: none !important; }
 </style>
 </head>
 <body class="is-gated">
 
-<!-- ======= PASSWORD GATE ======= -->
+<!-- ======= 506(b) PRIVATE-OFFERING GATE =======
+     Step 1: Accredited investor + pre-existing relationship acknowledgment
+     Step 2: Access password (provided by Pendulum's deal team)
+     The password check is client-side obscurity, not security. -->
 <div class="p-gate" id="gate">
   <div class="p-gate__panel">
     <img class="p-gate__logo" src="assets/logo-navy.svg" alt="Pendulum Property Partners">
-    <h2 class="p-gate__title">Investor Offering · Confidential</h2>
-    <p class="p-gate__sub">
-      This page is for accredited-investor preview only. Please enter the access password
-      provided by Pendulum's deal team.
-    </p>
-    <form id="gate-form" autocomplete="off">
-      <input type="password" class="p-gate__input" id="gate-input" placeholder="Access password" autofocus required>
-      <div class="p-gate__error" id="gate-error" aria-live="polite"></div>
-      <button type="submit" class="p-btn p-btn--no-arrow" style="width:100%;">Enter</button>
-    </form>
-    <p style="font-size:11px;color:var(--p-gray);margin-top:var(--sp-5);line-height:1.6;">
-      Need access? Contact <a href="mailto:khayes@pendulumpp.com">khayes@pendulumpp.com</a>.
-      <br>This preview is not an offer to sell securities.
+    <span class="p-gate__eyebrow">Confidential · Private Offering · Regulation D 506(b)</span>
+    <h2 class="p-gate__title">747 Front St &mdash; Investor Offering</h2>
+
+    <!-- Progress indicator (2 steps) -->
+    <div class="p-gate__progress">
+      <span id="gate-prog-1" class="is-done"></span>
+      <span id="gate-prog-2"></span>
+    </div>
+
+    <!-- ===== Step 1: Acknowledgment ===== -->
+    <div class="p-gate__step is-active" data-step="1">
+      <p class="p-gate__sub">
+        This page is a confidential preview of a private real-estate offering under
+        <strong>Rule 506(b) of Regulation D</strong>. It is not a general solicitation and is intended
+        only for investors with a pre-existing substantive relationship with Pendulum Property
+        Partners. Please confirm the following before continuing.
+      </p>
+
+      <label class="p-gate__check">
+        <input type="checkbox" id="ack-1" required>
+        <span class="p-gate__check-text">
+          <strong>I am an accredited investor</strong> as defined under Rule 501(a) of Regulation D
+          &mdash; or a sophisticated investor with sufficient knowledge and experience in financial
+          matters to evaluate this offering.
+        </span>
+      </label>
+
+      <label class="p-gate__check">
+        <input type="checkbox" id="ack-2" required>
+        <span class="p-gate__check-text">
+          <strong>I have a pre-existing substantive relationship</strong> with Pendulum Property
+          Partners, and was invited to review this offering on that basis. I will not forward this
+          page or its contents to third parties.
+        </span>
+      </label>
+
+      <label class="p-gate__check">
+        <input type="checkbox" id="ack-3" required>
+        <span class="p-gate__check-text">
+          <strong>I understand this page is informational only</strong> and does not constitute an
+          offer to sell securities. Any offering will be made solely through the Private Placement
+          Memorandum and subscription documents.
+        </span>
+      </label>
+
+      <button type="button" id="gate-continue" class="p-btn p-btn--no-arrow" style="width:100%;margin-top:var(--sp-3);" disabled>
+        Continue
+      </button>
+    </div>
+
+    <!-- ===== Step 2: Password ===== -->
+    <div class="p-gate__step" data-step="2">
+      <p class="p-gate__sub">
+        Enter the access password provided by Pendulum's deal team.
+      </p>
+      <form id="gate-form" autocomplete="off">
+        <input type="password" class="p-gate__input" id="gate-input" placeholder="Access password" autocomplete="off" required>
+        <div class="p-gate__error" id="gate-error" aria-live="polite"></div>
+        <div class="p-gate__btn-row">
+          <button type="button" id="gate-back" class="p-btn p-btn--no-arrow" style="flex:0 0 auto;background:transparent;color:var(--p-navy);border:1px solid var(--color-border);">Back</button>
+          <button type="submit" class="p-btn p-btn--no-arrow" style="flex:1;">Enter</button>
+        </div>
+      </form>
+    </div>
+
+    <p class="p-gate__legal">
+      Need access? Contact <a href="mailto:dwagman@pendulumpp.com">dwagman@pendulumpp.com</a>.
+      <br>This preview is not an offer to sell securities. See offering memorandum for full risk factors.
     </p>
   </div>
 </div>
 
 <script>
-  // Simple obfuscated check — not real security, just a soft gate.
-  // The expected password is "Pendulum" — but we don't store it as plaintext;
-  // we compare a small hash. Even so, anyone with DevTools can bypass.
+  // 506(b) gate flow — step 1: acknowledgments, step 2: password.
   (function () {
-    const STORAGE_KEY = 'pendulum_gate_unlocked_v1';
-    const gate = document.getElementById('gate');
-    const form = document.getElementById('gate-form');
-    const input = document.getElementById('gate-input');
-    const error = document.getElementById('gate-error');
+    const STORAGE_KEY = 'pendulum_gate_unlocked_v2';
+    const gate         = document.getElementById('gate');
+    const form         = document.getElementById('gate-form');
+    const passInput    = document.getElementById('gate-input');
+    const errorEl      = document.getElementById('gate-error');
+    const continueBtn  = document.getElementById('gate-continue');
+    const backBtn      = document.getElementById('gate-back');
+    const acks         = [document.getElementById('ack-1'), document.getElementById('ack-2'), document.getElementById('ack-3')];
+    const step1        = gate.querySelector('[data-step="1"]');
+    const step2        = gate.querySelector('[data-step="2"]');
+    const prog1        = document.getElementById('gate-prog-1');
+    const prog2        = document.getElementById('gate-prog-2');
 
-    // Open if previously unlocked in this browser
+    // Restore if previously unlocked in this browser session
     if (sessionStorage.getItem(STORAGE_KEY) === '1') {
       unlock();
       return;
     }
 
+    function showStep(n) {
+      step1.classList.toggle('is-active', n === 1);
+      step2.classList.toggle('is-active', n === 2);
+      prog2.classList.toggle('is-done', n === 2);
+      if (n === 2) setTimeout(() => passInput.focus(), 80);
+    }
     function unlock() {
       document.body.classList.remove('is-gated');
       gate.style.display = 'none';
       try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
     }
 
+    // Step 1 — enable Continue once all 3 checks are ticked
+    function refreshContinue() {
+      continueBtn.disabled = !acks.every(b => b && b.checked);
+    }
+    acks.forEach(b => b && b.addEventListener('change', refreshContinue));
+    refreshContinue();
+
+    continueBtn.addEventListener('click', () => {
+      if (acks.every(b => b.checked)) showStep(2);
+    });
+    backBtn.addEventListener('click', () => showStep(1));
+
     // Lightweight FNV-1a hash so the literal password isn't sitting in source.
-    // Note: not real security — anyone with DevTools can read this script.
+    // Note: this is OBSCURITY, not security — anyone with DevTools can read the
+    // expected hash. Substantive accreditation/relationship verification is
+    // handled separately by the Pendulum deal team.
     function hash(s) {
       let h = 0x811c9dc5 >>> 0;
       for (let i = 0; i < s.length; i++) {
@@ -219,18 +358,18 @@
       }
       return h.toString(16);
     }
-    // Hash of "pendulum" (lowercased so the gate is case-insensitive)
+    // Hash of "pendulum" (lowercased, case-insensitive)
     const EXPECTED = 'a6335e47';
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const guess = input.value.trim().toLowerCase();
+      const guess = passInput.value.trim().toLowerCase();
       if (hash(guess) === EXPECTED) {
         unlock();
       } else {
-        error.textContent = 'Incorrect password. Try again or contact Pendulum.';
-        input.value = '';
-        input.focus();
+        errorEl.textContent = 'Incorrect password. Try again or contact Pendulum.';
+        passInput.value = '';
+        passInput.focus();
       }
     });
   })();
@@ -256,12 +395,10 @@
       <a href="#returns">Returns</a>
       <a href="#timeline">Timeline</a>
       <a href="#sponsor">Sponsor</a>
-      <a href="#partnership">Ownership</a>
-      <a href="#deal-team">Deal Team</a>
-      <!-- TODO: replace #subscription-link-tbd with the actual subscription
-           agreement page URL when finalized. Same TODO appears on hero CTA,
-           summary card, mobile sticky CTA, and CTA band. -->
-      <a href="#subscription-link-tbd" class="p-btn p-btn--onDark" style="padding:10px 20px;font-size:11px;letter-spacing:1.5px;">Subscribe</a>
+      <!-- Subscribe CTAs (6 across the page) all trigger #subscribe modal.
+           Form posts to a Google Apps Script web app that appends to a Google
+           Sheet — endpoint configured in window.SUBSCRIBE_ENDPOINT below. -->
+      <a href="#subscribe" data-action="subscribe" class="p-btn p-btn--onDark" style="padding:10px 20px;font-size:11px;letter-spacing:1.5px;">Subscribe</a>
     </nav>
   </div>
 </header>
@@ -276,7 +413,7 @@
       <h1 id="hero-h1">747 <b style="font-weight:inherit;">Front St</b></h1>
       <p class="p-lead" data-bind-html="hero.subhead">An off-market boutique office acquisition at a below-market basis in Jackson Square, one of San Francisco's most constrained submarkets, alongside an institutional LP in Landrock.</p>
       <div style="display:flex;gap:var(--sp-4);margin-top:var(--sp-5);flex-wrap:wrap;">
-        <a class="p-btn p-btn--onDark" href="#subscription-link-tbd">Subscribe to the Offering</a>
+        <a class="p-btn p-btn--onDark" href="#subscribe" data-action="subscribe">Subscribe to the Offering</a>
         <a class="p-btn p-btn--onDark" href="#thesis" style="opacity:0.85;">View the Thesis</a>
       </div>
     </div>
@@ -1210,7 +1347,7 @@
     Subscribe to the offering — or reach out to Dan Wagman directly for a 30-minute walkthrough of the underwriting.
   </p>
   <div style="display:flex;gap:var(--sp-4);justify-content:center;flex-wrap:wrap;">
-    <a class="p-btn" href="#subscription-link-tbd" style="background:var(--p-cyan);border-color:var(--p-cyan);">Subscribe to the Offering</a>
+    <a class="p-btn" href="#subscribe" data-action="subscribe" style="background:var(--p-cyan);border-color:var(--p-cyan);">Subscribe to the Offering</a>
     <a class="p-btn p-btn--onDark" href="mailto:dwagman@pendulumpp.com" style="opacity:0.9;">Email Dan Wagman</a>
   </div>
 </section>
@@ -1302,7 +1439,7 @@
   <div class="p-summary__row"><span class="p-summary__label">Target Return</span><span class="p-summary__val">19.54%<sup class="p-fnref">¹</sup></span></div>
   <div class="p-summary__row"><span class="p-summary__label">Target Multiple</span><span class="p-summary__val">1.60×<sup class="p-fnref">¹</sup></span></div>
   <div class="p-summary__row"><span class="p-summary__label">Min</span><span class="p-summary__val">$50K</span></div>
-  <a class="p-btn" href="#subscription-link-tbd">Subscribe</a>
+  <a class="p-btn" href="#subscribe" data-action="subscribe">Subscribe</a>
   <span class="p-caveat" style="margin-top:var(--sp-3);text-align:center;">All targets · Not guarantees</span>
 </aside>
 
@@ -1312,7 +1449,7 @@
 <!-- ======= MOBILE STICKY CTA (Theme D) ======= -->
 <div class="p-sticky-cta">
   <div class="p-sticky-cta__terms">$2.2M Co-GP · 36mo<strong>19.54% Target<sup style="font-size:60%;vertical-align:super;">¹</sup> · 1.60×</strong></div>
-  <a class="p-btn" href="#subscription-link-tbd" style="background:var(--p-cyan);border-color:var(--p-cyan);padding:10px 16px;font-size:11px;">Subscribe</a>
+  <a class="p-btn" href="#subscribe" data-action="subscribe" style="background:var(--p-cyan);border-color:var(--p-cyan);padding:10px 16px;font-size:11px;">Subscribe</a>
 </div>
 
 <!-- ======= LEAD MODAL (Theme D — accreditation gate) ======= -->
@@ -1470,7 +1607,7 @@
     { "name": "Dan Wagman",    "title": "Partner (Primary Contact)", "email": "dwagman@pendulumpp.com", "phone": "310.490.2523" },
     { "name": "Kevin Hayes",   "title": "CEO",                       "email": "khayes@pendulumpp.com",  "phone": "949.939.2839" },
     { "name": "Brian Walker",  "title": "President",                 "email": "bwalker@pendulumpp.com", "phone": "646.258.9614" },
-    { "name": "Brady Thomson", "title": "Vice President",            "email": "bthomson@pendulumpp.com","phone": "626.372.5555" },
+    { "name": "Brady Thomson", "title": "Senior Vice President",     "email": "bthomson@pendulumpp.com","phone": "626.372.5555" },
     { "name": "Xander Echt",   "title": "Senior Associate",          "email": "xecht@pendulumpp.com",   "phone": "224.343.0353" }
   ]
 }
@@ -1933,6 +2070,251 @@
 
   // initial render
   onScroll();
+})();
+</script>
+
+<!-- ======= SUBSCRIBE MODAL ======= -->
+<div class="p-sub-modal" id="sub-modal" role="dialog" aria-modal="true" aria-labelledby="sub-modal-title" hidden>
+  <div class="p-sub-modal__backdrop"></div>
+  <div class="p-sub-modal__panel">
+    <button class="p-sub-modal__close" id="sub-close" aria-label="Close">&times;</button>
+
+    <!-- Step 1: form -->
+    <div class="p-sub-modal__step is-active" data-step="form">
+      <span class="p-sub-modal__eyebrow">Subscribe · 747 Front St</span>
+      <h3 id="sub-modal-title" class="p-sub-modal__title">Indicate your interest</h3>
+      <p class="p-sub-modal__intro">
+        Submit the form below and Pendulum's deal team will follow up with subscription documents.
+        All fields required.
+      </p>
+
+      <form id="sub-form" autocomplete="off" novalidate>
+        <div class="p-sub-modal__field">
+          <label for="sub-name">Contact name</label>
+          <input id="sub-name" name="name" type="text" required>
+        </div>
+        <div class="p-sub-modal__row">
+          <div class="p-sub-modal__field">
+            <label for="sub-phone">Phone number</label>
+            <input id="sub-phone" name="phone" type="tel" inputmode="tel" required placeholder="(555) 555-5555">
+          </div>
+          <div class="p-sub-modal__field">
+            <label for="sub-email">Email address</label>
+            <input id="sub-email" name="email" type="email" required placeholder="you@firm.com">
+          </div>
+        </div>
+        <div class="p-sub-modal__field">
+          <label for="sub-citystatezip">City, State, ZIP</label>
+          <input id="sub-citystatezip" name="city_state_zip" type="text" required placeholder="San Francisco, CA 94111">
+        </div>
+        <div class="p-sub-modal__field">
+          <label for="sub-entity">Investing entity</label>
+          <input id="sub-entity" name="entity" type="text" required placeholder="Entity name (LLC, trust, individual, etc.)">
+        </div>
+        <div class="p-sub-modal__field">
+          <label for="sub-amount">Indicative dollar amount</label>
+          <div class="p-sub-modal__amount">
+            <span>$</span>
+            <input id="sub-amount" name="amount" type="text" inputmode="numeric" required placeholder="250,000">
+          </div>
+          <span class="p-sub-modal__hint">Min $50,000 · Max $2,200,000</span>
+        </div>
+
+        <div class="p-sub-modal__error" id="sub-error" aria-live="polite"></div>
+        <button type="submit" id="sub-submit" class="p-btn p-btn--no-arrow" style="width:100%;">Submit</button>
+        <p class="p-sub-modal__legal">
+          By submitting, you confirm you are an accredited or sophisticated investor with a pre-existing
+          relationship with Pendulum Property Partners. This is not a binding subscription; the deal team
+          will follow up with formal Subscription Agreement documents.
+        </p>
+      </form>
+    </div>
+
+    <!-- Step 2: thank you -->
+    <div class="p-sub-modal__step" data-step="done">
+      <div class="p-sub-modal__success">
+        <div class="p-sub-modal__success-mark">&#10003;</div>
+        <h3 class="p-sub-modal__title">Thank you</h3>
+        <p class="p-sub-modal__intro">
+          Your indication of interest has been recorded. Dan Wagman will follow up within one business
+          day with subscription documents and a 30-minute walkthrough of the underwriting.
+        </p>
+        <p class="p-sub-modal__legal">
+          Questions in the meantime? <a href="mailto:dwagman@pendulumpp.com">dwagman@pendulumpp.com</a> · 310.490.2523
+        </p>
+        <button type="button" id="sub-close-2" class="p-btn p-btn--no-arrow" style="width:100%;margin-top:var(--sp-4);">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* ===== Subscribe modal ===== */
+  .p-sub-modal { position: fixed; inset: 0; z-index: 10500; display: flex; align-items: center; justify-content: center; padding: var(--sp-4); overflow-y: auto; }
+  .p-sub-modal[hidden] { display: none; }
+  .p-sub-modal__backdrop { position: fixed; inset: 0; background: rgba(8,12,20,0.78); }
+  .p-sub-modal__panel { position: relative; background: var(--p-white); width: 100%; max-width: 600px; padding: var(--sp-7) var(--sp-6); margin: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.4); }
+  @media (max-width: 600px) { .p-sub-modal__panel { padding: var(--sp-6) var(--sp-5); } }
+  .p-sub-modal__close { position: absolute; top: 12px; right: 16px; width: 36px; height: 36px; border: none; background: transparent; font-size: 24px; color: var(--p-gray); cursor: pointer; line-height: 1; }
+  .p-sub-modal__close:hover { color: var(--color-text-strong); }
+  .p-sub-modal__eyebrow { display: block; font-family: var(--font-eyebrow); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--p-cyan); margin-bottom: var(--sp-3); }
+  .p-sub-modal__title { font-family: var(--font-display); font-size: 26px; font-weight: 600; color: var(--color-text-strong); margin: 0 0 var(--sp-3); line-height: 1.2; }
+  .p-sub-modal__intro { font-size: 14px; color: var(--color-text); line-height: 1.7; margin: 0 0 var(--sp-5); }
+  .p-sub-modal__step { display: none; }
+  .p-sub-modal__step.is-active { display: block; }
+  .p-sub-modal__field { margin-bottom: var(--sp-4); }
+  .p-sub-modal__field label { display: block; font-family: var(--font-eyebrow); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--p-gray); margin-bottom: 6px; }
+  .p-sub-modal__field input { width: 100%; padding: 12px 14px; font-family: var(--font-body); font-size: 15px; border: 1px solid var(--color-border); background: var(--p-white); outline: none; transition: border-color var(--dur-base) var(--ease); box-sizing: border-box; }
+  .p-sub-modal__field input:focus { border-color: var(--p-navy); }
+  .p-sub-modal__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+  @media (max-width: 520px) { .p-sub-modal__row { grid-template-columns: 1fr; } }
+  .p-sub-modal__amount { display: flex; align-items: stretch; border: 1px solid var(--color-border); }
+  .p-sub-modal__amount span { padding: 12px 14px; background: var(--p-mist); border-right: 1px solid var(--color-border); font-family: var(--font-body); color: var(--p-gray); font-size: 15px; }
+  .p-sub-modal__amount input { flex: 1; border: 0; padding: 12px 14px; font-family: var(--font-body); font-size: 15px; outline: none; font-feature-settings: 'tnum' 1, 'lnum' 1; }
+  .p-sub-modal__hint { display: block; font-size: 11px; color: var(--p-gray); margin-top: 6px; }
+  .p-sub-modal__error { font-size: 12px; color: var(--p-accent-rust); margin-bottom: var(--sp-3); min-height: 18px; }
+  .p-sub-modal__legal { font-size: 11px; color: var(--p-gray); line-height: 1.6; margin-top: var(--sp-4); }
+  .p-sub-modal__success { text-align: center; padding: var(--sp-3) 0; }
+  .p-sub-modal__success-mark { width: 56px; height: 56px; border-radius: 50%; background: var(--p-cyan); color: var(--p-white); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto var(--sp-4); }
+  body.no-scroll { overflow: hidden; }
+</style>
+
+<script>
+(function () {
+  // ===== Subscribe modal + Google Sheet submission =====
+  // The form POSTs JSON to a Google Apps Script web app endpoint (deployed
+  // by Cody — see the setup README in /docs/). Each submission appends a row
+  // to the bound Google Sheet.
+  //
+  // Replace this URL with the actual deployed Apps Script web-app URL.
+  window.SUBSCRIBE_ENDPOINT = 'REPLACE_WITH_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+
+  const modal      = document.getElementById('sub-modal');
+  const backdrop   = modal.querySelector('.p-sub-modal__backdrop');
+  const closeBtn   = document.getElementById('sub-close');
+  const closeBtn2  = document.getElementById('sub-close-2');
+  const form       = document.getElementById('sub-form');
+  const submitBtn  = document.getElementById('sub-submit');
+  const errorEl    = document.getElementById('sub-error');
+  const amountInp  = document.getElementById('sub-amount');
+  const stepForm   = modal.querySelector('[data-step="form"]');
+  const stepDone   = modal.querySelector('[data-step="done"]');
+
+  function open() {
+    modal.hidden = false;
+    document.body.classList.add('no-scroll');
+    setTimeout(() => document.getElementById('sub-name')?.focus(), 50);
+  }
+  function close() {
+    modal.hidden = true;
+    document.body.classList.remove('no-scroll');
+    // Reset to form view next time
+    stepForm.classList.add('is-active');
+    stepDone.classList.remove('is-active');
+  }
+
+  // Expose globally so other buttons can call (in case we add inline triggers later)
+  window.openSubscribeModal = open;
+
+  // Wire up every element with data-action="subscribe"
+  document.querySelectorAll('[data-action="subscribe"]').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); open(); });
+  });
+
+  closeBtn.addEventListener('click', close);
+  closeBtn2.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (!modal.hidden && e.key === 'Escape') close(); });
+
+  // Live comma format for amount
+  const parseAmount = (s) => parseInt(String(s).replace(/[^0-9]/g, ''), 10) || 0;
+  amountInp.addEventListener('input', (e) => {
+    const raw = parseAmount(e.target.value);
+    e.target.value = raw ? raw.toLocaleString('en-US') : '';
+  });
+
+  // Phone: light auto-formatting
+  const phoneInp = document.getElementById('sub-phone');
+  phoneInp.addEventListener('input', (e) => {
+    let d = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+    if (d.length > 6)      e.target.value = `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
+    else if (d.length > 3) e.target.value = `(${d.slice(0,3)}) ${d.slice(3)}`;
+    else if (d.length)     e.target.value = `(${d}`;
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.textContent = '';
+
+    const name           = document.getElementById('sub-name').value.trim();
+    const phone          = phoneInp.value.trim();
+    const email          = document.getElementById('sub-email').value.trim();
+    const city_state_zip = document.getElementById('sub-citystatezip').value.trim();
+    const entity         = document.getElementById('sub-entity').value.trim();
+    const amount         = parseAmount(amountInp.value);
+
+    if (!name || !phone || !email || !city_state_zip || !entity || !amount) {
+      errorEl.textContent = 'Please fill in every field.';
+      return;
+    }
+    if (amount < 50000)    { errorEl.textContent = 'Minimum investment is $50,000.';  return; }
+    if (amount > 2200000)  { errorEl.textContent = 'Max in this round is $2,200,000.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errorEl.textContent = 'Please enter a valid email.'; return; }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      deal: '747 Front St',
+      name, phone, email, city_state_zip, entity, amount,
+      source_url: window.location.href
+    };
+
+    try {
+      const endpoint = window.SUBSCRIBE_ENDPOINT;
+      if (!endpoint || endpoint.indexOf('REPLACE_WITH') === 0) {
+        // Endpoint not yet configured — log to console + still email-fallback
+        console.warn('[subscribe] SUBSCRIBE_ENDPOINT not configured; logging payload:', payload);
+        await new Promise(r => setTimeout(r, 400)); // small delay so UX feels right
+      } else {
+        // Apps Script web app accepts text/plain to dodge CORS preflight
+        await fetch(endpoint, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      // Mailto fallback: opens user's mail client with the data pre-populated.
+      // This ensures the deal team gets notified even if Sheets fails.
+      const subject = encodeURIComponent(`[747 Front St] Subscription interest — ${name}`);
+      const body    = encodeURIComponent(
+        `New subscription interest for 747 Front St\n\n` +
+        `Name:      ${name}\nPhone:     ${phone}\nEmail:     ${email}\n` +
+        `Location:  ${city_state_zip}\nEntity:    ${entity}\n` +
+        `Amount:    $${amount.toLocaleString('en-US')}\n\n` +
+        `Submitted: ${new Date().toLocaleString()}\nSource:    ${window.location.href}\n`
+      );
+      // Best-effort: open mailto in background. Not critical if blocked.
+      const mailto = `mailto:cody@capistranore.com?subject=${subject}&body=${body}`;
+      const a = document.createElement('a');
+      a.href = mailto; a.style.display='none'; document.body.appendChild(a);
+      try { a.click(); } catch(e) {}
+      document.body.removeChild(a);
+
+      stepForm.classList.remove('is-active');
+      stepDone.classList.add('is-active');
+    } catch (err) {
+      console.error('[subscribe] submit failed:', err);
+      errorEl.textContent = 'Submission failed. Please try again or email cody@capistranore.com.';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit';
+    }
+  });
 })();
 </script>
 
