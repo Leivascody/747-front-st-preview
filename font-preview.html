@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font Preview — 747 Front St</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Serif+Display:ital@0;1&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+
+<style>
+  :root {
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-display: 'Source Serif Pro', Georgia, serif;
+    --font-eyebrow: 'Inter', system-ui, sans-serif;
+  }
+  body {
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background: var(--p-white);
+    margin: 0;
+    padding: 0;
+    letter-spacing: -0.005em;
+  }
+  .toolbar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--p-navy); color: var(--p-white);
+    padding: 16px 32px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  }
+  .toolbar h1 {
+    font-family: var(--font-eyebrow);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+    flex: 0 0 auto;
+  }
+  .toolbar h1 strong { color: var(--p-white); }
+  .toolbar__sep { flex: 1 1 auto; min-width: 0; }
+  .toolbar a {
+    font-family: var(--font-eyebrow);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.22);
+    padding: 10px 14px;
+    transition: all 160ms ease;
+  }
+  .toolbar a:hover { background: rgba(255,255,255,0.12); color: var(--p-white); }
+
+  .picker {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .picker button {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0;
+    background: rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: background 160ms ease;
+  }
+  .picker button:hover { background: rgba(255,255,255,0.20); }
+  .picker button.is-active {
+    background: var(--p-cyan);
+    color: var(--p-white);
+    border-color: var(--p-cyan);
+  }
+  .picker button small {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.8;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-top: 1px;
+  }
+
+  /* ==== Preview content ==== */
+  .preview { max-width: 1170px; margin: 0 auto; padding: 56px 32px; }
+
+  .hero-block {
+    background: var(--p-navy);
+    color: var(--p-white);
+    padding: 80px 56px;
+    margin-bottom: 64px;
+  }
+  @media (max-width: 700px) { .hero-block { padding: 56px 28px; } }
+  .hero-block .eyebrow {
+    font-family: var(--font-eyebrow);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.78);
+    display: block;
+    margin-bottom: 16px;
+  }
+  .hero-block h1 {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 600;
+    line-height: 1;
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+  }
+  .hero-block p {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.88);
+    margin: 0;
+    max-width: 760px;
+  }
+
+  /* Stat band */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 64px;
+    background: var(--p-mist);
+    padding: 40px 32px;
+  }
+  @media (max-width: 900px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .stats { grid-template-columns: 1fr; } }
+  .stat .num {
+    font-family: var(--font-body);
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    font-size: 48px; font-weight: 700;
+    color: var(--p-navy);
+    line-height: 1.05;
+  }
+  .stat .label {
+    font-family: var(--font-eyebrow);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--p-gray);
+    margin-top: 6px;
+  }
+
+  /* Section block */
+  .section { margin-bottom: 64px; }
+  .section .eyebrow {
+    font-family: var(--font-eyebrow);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--p-cyan);
+    display: block;
+    margin-bottom: 12px;
+  }
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-text-strong);
+    margin: 0 0 24px;
+  }
+  .section p.lead {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--color-text);
+    margin: 0 0 18px;
+  }
+  .section p.body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--p-gray);
+    margin: 0;
+  }
+
+  /* Pull quote */
+  .pull {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-text-strong);
+    border-left: 3px solid var(--p-navy);
+    padding-left: 28px;
+    margin: 0 0 64px;
+  }
+  .pull cite {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    color: var(--p-navy);
+    margin-top: 14px;
+  }
+
+  /* Sample tabular row (S&U style) */
+  .row {
+    display: flex; justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .row__label {
+    font-family: var(--font-eyebrow);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--p-gray);
+  }
+  .row__val {
+    font-family: var(--font-body);
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    font-weight: 700;
+    color: var(--color-text-strong);
+  }
+
+  /* Bottom compact grid: all 4 stacks at once, label + miniature hero */
+  .compare-grid {
+    border-top: 1px solid var(--color-border);
+    margin-top: 80px;
+    padding-top: 48px;
+  }
+  .compare-grid h3 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--p-gray);
+    margin: 0 0 24px;
+  }
+  .compare-grid .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 760px) { .compare-grid .grid { grid-template-columns: 1fr; } }
+  .compare-card {
+    background: var(--p-mist);
+    padding: 32px;
+    border: 1px solid var(--color-border);
+  }
+  .compare-card .name {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--p-cyan);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .compare-card .stack {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    color: var(--p-gray);
+    margin-bottom: 20px;
+  }
+  /* Each compare-card gets its own scoped fonts via attribute */
+  .compare-card[data-stack="current"]      { --c-display: 'Source Serif Pro', Georgia, serif; }
+  .compare-card[data-stack="fraunces"]     { --c-display: 'Fraunces', Georgia, serif; }
+  .compare-card[data-stack="dm-serif"]     { --c-display: 'DM Serif Display', Georgia, serif; }
+  .compare-card[data-stack="playfair"]     { --c-display: 'Playfair Display', Georgia, serif; }
+  .compare-card .mini-h {
+    font-family: var(--c-display);
+    font-size: 44px; font-weight: 600;
+    line-height: 1.05;
+    color: var(--color-text-strong);
+    margin: 0 0 14px;
+    letter-spacing: -0.02em;
+  }
+  .compare-card .mini-sec {
+    font-family: var(--c-display);
+    font-size: 22px; font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-text-strong);
+    margin: 0 0 8px;
+    letter-spacing: -0.012em;
+  }
+  .compare-card .mini-body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px; line-height: 1.65;
+    color: var(--p-gray);
+    margin: 0;
+  }
+
+  /* Notes box */
+  .notes {
+    background: var(--p-mist);
+    border-left: 3px solid var(--p-cyan);
+    padding: 24px 32px;
+    margin-bottom: 56px;
+  }
+  .notes h4 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--p-navy);
+    margin: 0 0 10px;
+  }
+  .notes p {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px; line-height: 1.65;
+    color: var(--color-text-strong);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Toolbar with font-stack picker ===== -->
+<div class="toolbar">
+  <h1>Font Preview · <strong>747 Front St</strong></h1>
+  <div class="toolbar__sep"></div>
+  <div class="picker" role="tablist" aria-label="Font stack">
+    <button type="button" data-stack="current"  class="is-active">Current<small>Inter + Source Serif Pro</small></button>
+    <button type="button" data-stack="fraunces">Fraunces<small>Inter + Fraunces</small></button>
+    <button type="button" data-stack="dm-serif">DM Serif<small>Inter + DM Serif Display</small></button>
+    <button type="button" data-stack="playfair">Playfair<small>Inter + Playfair Display</small></button>
+  </div>
+  <a href="index.html">Back to site</a>
+</div>
+
+<div class="preview" id="preview">
+
+  <!-- Notes -->
+  <div class="notes">
+    <h4>What you're looking at</h4>
+    <p>
+      Each font stack uses Inter for body text and tabular numerals (so financial data renders cleanly).
+      Only the display face — the headers, hero, and pull quote — changes between options. Click the
+      buttons above to swap the display font on the live preview. Scroll to the bottom for an all-four
+      side-by-side comparison at the same scale.
+    </p>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-block">
+    <span class="eyebrow">Investor Offering · San Francisco</span>
+    <h1>747 Front St</h1>
+    <p>
+      An off-market boutique office acquisition at a below-market basis in Jackson Square, one of
+      San Francisco's most constrained submarkets, alongside an institutional LP in Landrock.
+    </p>
+  </div>
+
+  <!-- STAT BAND -->
+  <div class="stats">
+    <div class="stat">
+      <div class="num">19.54%</div>
+      <div class="label">Target Levered Return</div>
+    </div>
+    <div class="stat">
+      <div class="num">1.60×</div>
+      <div class="label">Target Multiple</div>
+    </div>
+    <div class="stat">
+      <div class="num">36 mo</div>
+      <div class="label">Hold Period</div>
+    </div>
+    <div class="stat">
+      <div class="num">$575/sf</div>
+      <div class="label">Acquisition Basis</div>
+    </div>
+  </div>
+
+  <!-- SECTION -->
+  <div class="section">
+    <span class="eyebrow">The Thesis</span>
+    <h2>A loan-to-own play on a fully-improved Jackson Square office building.</h2>
+    <p class="lead">
+      Ares originated a $54.9M loan on the building in 2019 against a $70.5M purchase (all-in basis
+      of $1,019 PSF). Pendulum is acquiring that loan at $46.95M — roughly 88¢ on the dollar of the
+      original origination, and ±56% of the current owner's all-in basis.
+    </p>
+    <p class="body">
+      Prior ownership and tenants have invested significant capital into cosmetic and back-of-house
+      improvements that new ownership does not have to spend. The building sits in Jackson Square,
+      one of San Francisco's most supply-constrained office submarkets with effectively no new
+      competitive supply due to historic and zoning constraints.
+    </p>
+  </div>
+
+  <!-- PULL QUOTE -->
+  <p class="pull">
+    Best-in-market product at commodity rents — first mover on rent decreases within the comp set,
+    with an experienced ownership team executing a spec suite and amenity plan.
+    <cite>— 747 Front St business plan thesis</cite>
+  </p>
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <span class="eyebrow">Sources &amp; Uses</span>
+    <h2>How the deal is funded.</h2>
+    <div class="row"><span class="row__label">Acquisition Price</span><span class="row__val">$46,950,000</span></div>
+    <div class="row"><span class="row__label">Per Square Foot</span><span class="row__val">$575 / sf</span></div>
+    <div class="row"><span class="row__label">Financing / Closing Costs</span><span class="row__val">±$1.5M</span></div>
+    <div class="row"><span class="row__label">Total Uses</span><span class="row__val">±$55.3M</span></div>
+  </div>
+
+  <!-- ALL-FOUR COMPARE GRID -->
+  <div class="compare-grid">
+    <h3>All four stacks · same scale · for direct comparison</h3>
+    <div class="grid">
+      <div class="compare-card" data-stack="current">
+        <span class="name">Current</span>
+        <div class="stack">Inter + Source Serif Pro</div>
+        <h4 class="mini-h">747 Front St</h4>
+        <h5 class="mini-sec">The Thesis</h5>
+        <p class="mini-body">A loan-to-own play on a fully-improved Jackson Square office building.</p>
+      </div>
+      <div class="compare-card" data-stack="fraunces">
+        <span class="name">Option A</span>
+        <div class="stack">Inter + Fraunces</div>
+        <h4 class="mini-h">747 Front St</h4>
+        <h5 class="mini-sec">The Thesis</h5>
+        <p class="mini-body">A loan-to-own play on a fully-improved Jackson Square office building.</p>
+      </div>
+      <div class="compare-card" data-stack="dm-serif">
+        <span class="name">Option B</span>
+        <div class="stack">Inter + DM Serif Display</div>
+        <h4 class="mini-h">747 Front St</h4>
+        <h5 class="mini-sec">The Thesis</h5>
+        <p class="mini-body">A loan-to-own play on a fully-improved Jackson Square office building.</p>
+      </div>
+      <div class="compare-card" data-stack="playfair">
+        <span class="name">Option C</span>
+        <div class="stack">Inter + Playfair Display</div>
+        <h4 class="mini-h">747 Front St</h4>
+        <h5 class="mini-sec">The Thesis</h5>
+        <p class="mini-body">A loan-to-own play on a fully-improved Jackson Square office building.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Toggle the live preview font stack
+  const STACKS = {
+    'current':  { display: "'Source Serif Pro', Georgia, serif" },
+    'fraunces': { display: "'Fraunces', Georgia, serif" },
+    'dm-serif': { display: "'DM Serif Display', Georgia, serif" },
+    'playfair': { display: "'Playfair Display', Georgia, serif" }
+  };
+
+  const buttons = document.querySelectorAll('.picker button[data-stack]');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const stack = STACKS[btn.dataset.stack];
+      document.documentElement.style.setProperty('--font-display', stack.display);
+      buttons.forEach(b => b.classList.toggle('is-active', b === btn));
+      // Persist selection through page reloads for easy comparison
+      try { sessionStorage.setItem('fp_choice', btn.dataset.stack); } catch(e) {}
+    });
+  });
+
+  // Restore last choice
+  try {
+    const saved = sessionStorage.getItem('fp_choice');
+    if (saved && STACKS[saved]) {
+      document.documentElement.style.setProperty('--font-display', STACKS[saved].display);
+      buttons.forEach(b => b.classList.toggle('is-active', b.dataset.stack === saved));
+    }
+  } catch(e) {}
+</script>
+
+</body>
+</html>
