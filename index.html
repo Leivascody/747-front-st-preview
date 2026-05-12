@@ -2289,23 +2289,9 @@
         });
       }
 
-      // Mailto fallback: opens user's mail client with the data pre-populated.
-      // This ensures the deal team gets notified even if Sheets fails.
-      const subject = encodeURIComponent(`[747 Front St] Subscription interest — ${name}`);
-      const body    = encodeURIComponent(
-        `New subscription interest for 747 Front St\n\n` +
-        `Name:      ${name}\nPhone:     ${phone}\nEmail:     ${email}\n` +
-        `Street:    ${street_address}\nLocation:  ${city_state_zip}\nEntity:    ${entity}\n` +
-        `Amount:    $${amount.toLocaleString('en-US')}\n\n` +
-        `Submitted: ${new Date().toLocaleString()}\nSource:    ${window.location.href}\n`
-      );
-      // Best-effort: open mailto in background. Not critical if blocked.
-      const mailto = `mailto:cody@capistranore.com?subject=${subject}&body=${body}`;
-      const a = document.createElement('a');
-      a.href = mailto; a.style.display='none'; document.body.appendChild(a);
-      try { a.click(); } catch(e) {}
-      document.body.removeChild(a);
-
+      // Apps Script handles the notification email server-side (see
+      // SUBSCRIBE_FORM_SETUP.md). No client-side mailto fallback needed —
+      // having both would duplicate the email to cody@capistranore.com.
       stepForm.classList.remove('is-active');
       stepDone.classList.add('is-active');
     } catch (err) {
