@@ -44,16 +44,13 @@
     font-feature-settings: 'tnum' 1, 'lnum' 1;
   }
 
-  /* ===== Header padding fix =====
-     components.css declares `.p-header__inner { padding: var(--sp-5) 0; }`
-     which overrides the horizontal .p-container padding on this same
-     element — the logo ends up flush against the container edge. Restore
-     horizontal padding so the logo aligns with body content and has
-     breathing room from the page edge. */
+  /* ===== Header padding fix + logo size ===== */
   .p-header__inner {
     padding-left:  var(--container-pad-x);
     padding-right: var(--container-pad-x);
   }
+  .p-header__logo { height: 84px; }
+  @media (max-width: 600px) { .p-header__logo { height: 60px; } }
 
   /* ===== Reusable bits matching index.html ===== */
   .asset-stat { padding: var(--sp-4) 0; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; gap: var(--sp-4); }

@@ -41,15 +41,29 @@
   @media (max-width: 1024px) { .p-calc__results { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px)  { .p-calc__results { grid-template-columns: 1fr; } }
 
-  /* ===== Header padding fix =====
+  /* ===== Header padding fix + logo size =====
      components.css declares `.p-header__inner { padding: var(--sp-5) 0; }`
      which overrides the .p-container horizontal padding (also applied to
      this same element) — leaving the logo flush against the container edge.
-     Restore horizontal padding so the logo aligns with the body container
-     and gets a bit of breathing room from the page edge. */
+     Restore horizontal padding so the logo aligns with the body container.
+     Also enlarge the logo (default 56px → 84px) per Cody. */
   .p-header__inner {
     padding-left:  var(--container-pad-x);
     padding-right: var(--container-pad-x);
+  }
+  .p-header__logo { height: 84px; }
+  @media (max-width: 600px) { .p-header__logo { height: 60px; } }
+
+  /* ===== Capital stack typography overrides =====
+     Cody wants the tier amount ($X.XM) to read at the same size as the
+     tier name (default 32px vs 22px). Bring them in line. */
+  .p-capstack__tier-amt {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+  }
+  @media (max-width: 767px) {
+    .p-capstack__tier-amt { font-size: 18px !important; }
   }
 
   /* ============= FONT OVERRIDE (institutional)
@@ -410,11 +424,10 @@
   <div class="p-container">
     <div class="p-hero__content">
       <span class="p-eyebrow p-eyebrow--onDark" data-bind-html="hero.eyebrow">Investor Offering · San Francisco</span>
-      <h1 id="hero-h1">747 <b style="font-weight:inherit;">Front St</b></h1>
-      <p class="p-lead" data-bind-html="hero.subhead">An off-market boutique office acquisition at a below-market basis in Jackson Square, one of San Francisco's most constrained submarkets, alongside an institutional LP in Landrock.</p>
+      <h1 id="hero-h1">747 <b style="font-weight:inherit;">Front Street</b></h1>
+      <p class="p-lead" data-bind-html="hero.subhead">An off-market office acquisition in a GP position, in one of San Francisco's most constrained submarkets, alongside an institutional LP &mdash; Landrock Capital Partners.</p>
       <div style="display:flex;gap:var(--sp-4);margin-top:var(--sp-5);flex-wrap:wrap;">
-        <a class="p-btn p-btn--onDark" href="#subscribe" data-action="subscribe">Subscribe to the Offering</a>
-        <a class="p-btn p-btn--onDark" href="#thesis" style="opacity:0.85;">View the Thesis</a>
+        <a class="p-btn p-btn--onDark" href="#thesis">View the Thesis</a>
       </div>
     </div>
   </div>
@@ -442,7 +455,10 @@
         <div class="p-stat__label">Acquisition Basis</div>
       </div>
     </div>
-    <p class="p-disclosure" style="margin-top:var(--sp-6);">
+    <p data-reveal style="margin:var(--sp-5) 0 0;text-align:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--p-navy);">
+      Anticipated Close &mdash; July 1
+    </p>
+    <p class="p-disclosure" style="margin-top:var(--sp-5);">
       <strong>¹ Target Returns</strong>
       Target levered return and target multiple are projections derived from Pendulum's Base Case underwriting.
       <strong style="display:inline;font-family:inherit;font-size:11px;letter-spacing:0;text-transform:none;color:var(--color-text-strong);">Targets are not guarantees.</strong>
@@ -457,15 +473,9 @@
 <section class="p-section" id="thesis">
   <div class="p-container" style="position:relative;">
     <span class="p-eyebrow" data-reveal>The Thesis</span>
-    <h3 data-reveal>A loan-to-own play on a fully-improved Jackson Square office building.</h3>
-    <p class="p-lead" data-reveal>
-      Ares originated a $54.9M loan on the building in 2019 against a $70.5M purchase (all-in basis of $1,019 PSF).
-      Pendulum is acquiring that loan at $46.95M — roughly 88¢ on the dollar of the original origination, and
-      ±56% of the current owner's all-in basis. Prior ownership and tenants have invested significant capital
-      into cosmetic and back-of-house improvements that new ownership does not have to spend.
-    </p>
+    <h3 data-reveal>Opportunity to buy one of the best office buildings in one of San Francisco's most desirable submarkets and capture early cycle recovery growth.</h3>
 
-    <p data-reveal>Three things make the deal work at this basis:</p>
+    <p data-reveal style="margin-top:var(--sp-5);">Three things make the deal work at this basis:</p>
 
     <ol style="line-height:1.8;color:var(--p-gray);margin-top:var(--sp-4);" data-reveal>
       <li><strong>Institutional-quality boutique asset at an early-cycle basis.</strong> Off-market, lender-driven
@@ -478,6 +488,14 @@
         institutional supply, positive leasing fundamentals, and sustained tenant demand from AI, VC, legal, and
         financial-services users seeking differentiated creative office product.</li>
     </ol>
+
+    <p class="p-lead" data-reveal style="margin-top:var(--sp-7);">
+      Ares originated a $54.9M loan on the building in 2019 against a $70.5M purchase (all-in basis of $1,019 PSF).
+      Pendulum is acquiring the asset directly from Ares for $46.95M following deed-in-lieu foreclosure &mdash;
+      roughly 88¢ on the dollar of the original origination, and ±56% of the current owner's all-in basis. Prior
+      ownership and tenants have invested significant capital into cosmetic and back-of-house improvements that new
+      ownership does not have to spend.
+    </p>
   </div>
 </section>
 
@@ -548,27 +566,27 @@
           <div class="p-donut__legend">
             <div class="p-donut__legend-item">
               <span class="p-donut__legend-swatch" style="background:#1a4373;"></span>
-              <span><span class="p-donut__legend-name">BraunHagey &amp; Borden</span><br><small style="color:var(--p-gray);font-size:12px;">Law · $300+ PSF total build out · leave mark to market to next buyer</small></span>
+              <span><span class="p-donut__legend-name">BraunHagey &amp; Borden &mdash; 4th Floor &amp; Roof</span><br><small style="color:var(--p-gray);font-size:12px;">Law · $300+ PSF total build out · leave mark to market to next buyer</small></span>
               <span class="p-donut__legend-pct">±29%</span>
             </div>
             <div class="p-donut__legend-item">
               <span class="p-donut__legend-swatch" style="background:#215587;"></span>
-              <span><span class="p-donut__legend-name">Minted</span><br><small style="color:var(--p-gray);font-size:12px;">E-Commerce · in building since 2014 · long term renewal / blend &amp; extend</small></span>
+              <span><span class="p-donut__legend-name">Minted &mdash; 2nd Floor</span><br><small style="color:var(--p-gray);font-size:12px;">E-Commerce · in building since 2014 · long term renewal / blend &amp; extend</small></span>
               <span class="p-donut__legend-pct">±25%</span>
             </div>
             <div class="p-donut__legend-item">
               <span class="p-donut__legend-swatch" style="background:#7ba3c8;"></span>
-              <span><span class="p-donut__legend-name">3rd Floor — re-tenanting</span><br><small style="color:var(--p-gray);font-size:12px;">Substantial residual value from existing improvements · ±$85 PSF turnkey build-out budgeted</small></span>
+              <span><span class="p-donut__legend-name">3rd Floor (Vacant) — Re-Tenanting</span><br><small style="color:var(--p-gray);font-size:12px;">Substantial residual value from existing improvements · ±$85 PSF turnkey build-out budgeted</small></span>
               <span class="p-donut__legend-pct">±25%</span>
             </div>
             <div class="p-donut__legend-item">
               <span class="p-donut__legend-swatch" style="background:#3d7aaf;"></span>
-              <span><span class="p-donut__legend-name">IVP</span><br><small style="color:var(--p-gray);font-size:12px;">Venture Capital · in building since 2020 · $300+ PSF total build out · likely renewal prior to sale</small></span>
+              <span><span class="p-donut__legend-name">IVP &mdash; 1st Floor</span><br><small style="color:var(--p-gray);font-size:12px;">Venture Capital · in building since 2020 · $300+ PSF total build out · likely renewal prior to sale</small></span>
               <span class="p-donut__legend-pct">±12%</span>
             </div>
             <div class="p-donut__legend-item">
               <span class="p-donut__legend-swatch" style="background:#009ade;"></span>
-              <span><span class="p-donut__legend-name">Empower</span><br><small style="color:var(--p-gray);font-size:12px;">Fitness · in building since 2012 · sticky tenant</small></span>
+              <span><span class="p-donut__legend-name">Empower &mdash; 1st Floor</span><br><small style="color:var(--p-gray);font-size:12px;">Fitness · in building since 2012 · sticky tenant</small></span>
               <span class="p-donut__legend-pct">±9%</span>
             </div>
           </div>
@@ -773,9 +791,9 @@
         Class A product and the CBD.
       </p>
       <ul style="line-height:1.8;color:var(--p-gray);margin-top:calc(-1 * var(--sp-3));margin-bottom:var(--sp-4);">
-        <li>Per C&amp;W, the San Francisco overall vacancy rate has declined by 110 basis points in Q1 2026 to 31.6%. It has fallen in five of the last six quarters and is at its lowest figure since the 29.6% in Q3 2023
+        <li>Per Cushman &amp; Wakefield, the San Francisco overall vacancy rate has declined by 110 basis points in Q1 2026 to 31.6%. It has fallen in five of the last six quarters and is at its lowest figure since the 29.6% in Q3 2023
           <ul style="line-height:1.8;margin-top:6px;">
-            <li>Jackson Square as of Q1 2026 sits at 18.6% vacancy</li>
+            <li>Jackson Square has significantly outperformed the San Francisco market sitting at 18.6% vacancy as of Q1 2026</li>
           </ul>
         </li>
         <li>Direct Vacancy in Tier 1 Assets — 9.4% (50% of which is contributed to One Market Plaza)</li>
@@ -790,7 +808,7 @@
         office product in walkable submarkets like Jackson Square.
       </p>
       <ul style="line-height:1.8;color:var(--p-gray);margin-top:calc(-1 * var(--sp-3));margin-bottom:var(--sp-4);">
-        <li>San Francisco rent growth has been real as of recent, especially noted in right-sized capital stack properties — 4.3% QoQ rent growth witnessed across SF CBD office</li>
+        <li>San Francisco witnessed 4.3% QoQ rent growth across SF CBD office, even more pronounced in right-sized capital stack properties</li>
         <li>Within Jackson Square comp set, same-building rent growth has witnessed over 8% annually over the last two years</li>
       </ul>
       <p>
@@ -841,10 +859,10 @@
               <th style="text-align:left;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">Building</th>
               <th style="text-align:left;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">Type</th>
               <th style="text-align:right;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">Size</th>
-              <th style="text-align:left;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">LCD</th>
+              <th style="text-align:left;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">Start Date</th>
               <th style="text-align:right;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">Term</th>
               <th style="text-align:right;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">Rent (FSG)</th>
-              <th style="text-align:right;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">FR</th>
+              <th style="text-align:right;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">Free Rent</th>
               <th style="text-align:right;padding:var(--sp-3) var(--sp-4);font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-navy);border-bottom:2px solid var(--p-navy);">TI</th>
             </tr>
           </thead>
@@ -889,20 +907,27 @@
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;color:var(--p-gray);">5 mo.</td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;color:var(--p-gray);">$105</td>
             </tr>
-            <!-- 747 Front St underwriting row — bordered as the subject deal -->
-            <tr style="background:var(--p-mist);outline:2px solid var(--p-navy);outline-offset:-2px;">
-              <td style="padding:var(--sp-3) var(--sp-4);font-weight:700;"><strong>747 Front St — UW</strong></td>
-              <td style="padding:var(--sp-3) var(--sp-4);color:var(--p-navy);font-weight:700;">New / Renewal</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;color:var(--p-gray);">—</td>
-              <td style="padding:var(--sp-3) var(--sp-4);color:var(--p-gray);">—</td>
+            <!-- 747 Front St underwriting row — bolded throughout as subject deal -->
+            <tr style="background:var(--p-mist);outline:2px solid var(--p-navy);outline-offset:-2px;font-weight:700;color:var(--color-text-strong);">
+              <td style="padding:var(--sp-3) var(--sp-4);"><strong>747 Front Street &mdash; UW</strong></td>
+              <td style="padding:var(--sp-3) var(--sp-4);color:var(--p-navy);">New / Renewal</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">&mdash;</td>
+              <td style="padding:var(--sp-3) var(--sp-4);">&mdash;</td>
               <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">91 mo.</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;font-weight:700;color:var(--p-navy);">$94</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;color:var(--p-gray);">7 mo.</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;color:var(--p-gray);">$140 (new) / $30 (renew)</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;color:var(--p-navy);">$94</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">7 mo.</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">$140 (new) / $30 (renew)</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <p style="margin-top:var(--sp-3);font-size:11px;color:var(--p-gray);font-style:italic;">
+        More lease comps available upon request.
+      </p>
+      <p style="margin-top:var(--sp-3);font-size:13px;color:var(--color-text);line-height:1.7;">
+        Business plan targets market rents similar to comps, albeit in a superior building and with higher tenant
+        concessions.
+      </p>
     </div>
 
     <!-- Sale comps -->
@@ -925,43 +950,46 @@
             <tr>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);"><strong>394 Pacific</strong></td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);">May-2026</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$33M</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;font-weight:700;color:var(--p-navy);">$620</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">~$770</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$33.0M</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$620</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;font-weight:700;color:var(--p-navy);">~$770</td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">100%</td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);color:var(--p-gray);">Zurich Investments</td>
             </tr>
             <tr>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);"><strong>600 Battery</strong></td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);">Aug-2026</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$70M</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;font-weight:700;color:var(--p-navy);">$562</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">~$712</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$70.0M</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$562</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;font-weight:700;color:var(--p-navy);">~$712</td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">100%</td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);color:var(--p-gray);">Madison Capital / Fortress</td>
             </tr>
             <tr>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);"><strong>500 Washington</strong></td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);">Dec-2024</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$32.65M</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;font-weight:700;color:var(--p-navy);">$297</td>
-              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">~$847</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$32.7M</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">$297</td>
+              <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;font-weight:700;color:var(--p-navy);">~$847</td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);text-align:right;">±39%</td>
               <td style="padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--color-border);color:var(--p-gray);">Brick &amp; Timber / Barings <small>(heavy renovation, de-tenanting)</small></td>
             </tr>
-            <!-- 747 Front St subject-deal row — bordered as the subject deal -->
-            <tr style="background:var(--p-mist);outline:2px solid var(--p-navy);outline-offset:-2px;">
-              <td style="padding:var(--sp-3) var(--sp-4);font-weight:700;"><strong>747 Front St</strong></td>
-              <td style="padding:var(--sp-3) var(--sp-4);color:var(--p-gray);">Exact date TBD</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">$46.90M</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;font-weight:700;color:var(--p-navy);">$575</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">$677</td>
-              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">73.6%</td>
-              <td style="padding:var(--sp-3) var(--sp-4);color:var(--p-navy);font-weight:700;">Pendulum / Landrock</td>
+            <!-- 747 Front Street subject-deal row — bolded throughout -->
+            <tr style="background:var(--p-mist);outline:2px solid var(--p-navy);outline-offset:-2px;font-weight:700;color:var(--color-text-strong);">
+              <td style="padding:var(--sp-3) var(--sp-4);"><strong>747 Front Street</strong></td>
+              <td style="padding:var(--sp-3) var(--sp-4);">Exact date TBD</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">$46.9M</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">$575</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;color:var(--p-navy);">$677</td>
+              <td style="padding:var(--sp-3) var(--sp-4);text-align:right;">74%</td>
+              <td style="padding:var(--sp-3) var(--sp-4);color:var(--p-navy);">Pendulum / Landrock</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <p style="margin-top:var(--sp-3);font-size:11px;color:var(--p-gray);font-style:italic;">
+        More sale comps available upon request.
+      </p>
     </div>
 
     <p style="margin-top:var(--sp-5);font-size:11px;color:var(--p-gray);font-style:italic;">
@@ -1025,7 +1053,10 @@
           <div class="p-calc__result-label">Illustrative Profit<sup class="p-fnref">²</sup></div>
         </div>
       </div>
-      <p style="margin-top:var(--sp-5);font-size:11px;color:var(--p-gray);line-height:1.6;">
+      <p style="margin-top:var(--sp-5);text-align:center;font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--p-navy);">
+        Anticipated Close &mdash; July 1
+      </p>
+      <p style="margin-top:var(--sp-4);font-size:11px;color:var(--p-gray);line-height:1.6;">
         <strong style="color:var(--color-text-strong);">² Illustrative Only.</strong> Target levered return and
         target multiple are projections derived from Pendulum's Base Case underwriting. Targets are not guarantees.
         Actual returns will vary based on lease-up timing, capital-markets conditions, and other factors detailed
@@ -1092,12 +1123,12 @@
     </div>
 
     <!-- Target stabilized basis — full-width row beneath both columns -->
-    <div data-reveal style="margin-top:var(--sp-6);padding:var(--sp-5) var(--sp-6);background:var(--p-navy);color:var(--p-white);">
+    <div data-reveal style="margin-top:var(--sp-6);padding:var(--sp-6);background:var(--p-navy);color:var(--p-white);">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--sp-4);">
-        <span style="font-family:var(--font-eyebrow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-cyan);">Target Stabilized Basis</span>
-        <span style="font-family:var(--font-brand);font-size:24px;font-weight:700;font-feature-settings:'tnum' 1,'lnum' 1;">$55.3M <small style="font-weight:400;opacity:0.75;font-size:14px;">($677 / sf)</small></span>
+        <span style="font-family:var(--font-eyebrow);font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p-cyan);">Target Stabilized Basis</span>
+        <span style="font-family:var(--font-brand);font-size:28px;font-weight:700;font-feature-settings:'tnum' 1,'lnum' 1;">$55.3M <span style="font-weight:400;opacity:0.85;">($677 / sf)</span></span>
       </div>
-      <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.78);font-style:italic;">
+      <div style="margin-top:12px;font-size:16px;font-weight:700;color:var(--p-white);font-style:italic;">
         ±66% discount to previous ownership basis of $1,019 PSF
       </div>
     </div>
@@ -1142,7 +1173,7 @@
           <h5 class="p-timeline__details-title" id="td-title">Close acquisition</h5>
         </div>
         <div class="p-timeline__details-body" id="td-body">
-          <p>Pendulum closes on the off-market loan acquisition at $46.95M ($575/sf). Senior debt (Ares seller financing at ±69% LTC) funds concurrently. Title transfers and Pendulum becomes the senior lender on the building, alongside institutional LP Landrock.</p>
+          <p>Pendulum closes on the off-market acquisition at $46.95M ($575/sf). Senior debt (Ares seller financing at ±69% LTC) funds concurrently. Title transfers and Pendulum takes control of day-to-day operations and management alongside Landrock.</p>
           <ul>
             <li>Wire Co-GP equity contributions to escrow</li>
             <li>LP equity (Landrock) funded concurrently</li>
@@ -1157,7 +1188,7 @@
     <div data-reveal style="margin-top:var(--sp-8);">
       <h5>Tenant-specific strategies</h5>
       <p style="font-size:13px;color:var(--p-gray);margin-bottom:var(--sp-4);">
-        Discrete plays layered into the 36-month hold to maximize residual value at exit.
+        Proactive tenant management discussions layered into the 36-month hold to maximize residual value at exit.
       </p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--sp-4);">
         <div style="padding:var(--sp-5);background:var(--p-white);border:1px solid var(--color-border);border-top:3px solid #1a4373;">
@@ -1169,7 +1200,7 @@
           </p>
         </div>
         <div style="padding:var(--sp-5);background:var(--p-white);border:1px solid var(--color-border);border-top:3px solid #215587;">
-          <strong style="display:block;font-family:var(--font-display);font-size:16px;color:var(--p-navy);margin-bottom:6px;">3rd Floor (±25%)</strong>
+          <strong style="display:block;font-family:var(--font-display);font-size:16px;color:var(--p-navy);margin-bottom:6px;">3rd Floor Vacancy (±25%)</strong>
           <p style="margin:0;font-size:13px;line-height:1.7;color:var(--p-gray);">
             Leasing velocity will be driven by turnkey spec suite buildout (±$85 PSF), marketing events, and
             ability to &ldquo;meet the market&rdquo; on concessions with new ownership basis.
@@ -1246,12 +1277,13 @@
          all the case-study content lives here on the main page. -->
     <div class="p-grid p-grid--2" style="margin-top:var(--sp-7);align-items:start;gap:var(--sp-7);" data-reveal>
       <div>
-        <h5 style="margin-top:0;">Existing Partnership Reference Case Study</h5>
+        <h5 style="margin-top:0;">Existing Partnership Case Study</h5>
         <p style="font-size:13px;color:var(--p-gray);margin-bottom:var(--sp-4);">
           505 N Brand · Glendale, CA &mdash; Pendulum &times; Landrock joint venture, acquired February 2025.
         </p>
         <ul style="line-height:1.8;color:var(--p-gray);padding-left:18px;margin:0;">
-          <li><strong>30k+ square feet</strong> of new leasing completed within the first four months of ownership</li>
+          <li><strong>Landrock:</strong> <a href="https://www.landrock.com/" target="_blank" rel="noopener" style="color:var(--p-navy);font-weight:600;">www.landrock.com</a></li>
+          <li style="margin-top:6px;"><strong>30k+ square feet</strong> of new leasing completed within the first four months of ownership</li>
           <li style="margin-top:6px;"><strong>65k+ square feet</strong> of renewals and new deals under negotiation</li>
           <li style="margin-top:6px;"><strong>6k square feet</strong> added through BOMA 2024 re-measurement</li>
           <li style="margin-top:6px;"><strong>Amenity upgrades:</strong> (1) Golf simulator renovation completed; (2) restaurant operator agreement executed / restaurant construction completion estimated for Q3 2026</li>
@@ -1343,7 +1375,7 @@
   <span class="p-eyebrow p-eyebrow--accent">Next Step</span>
   <h2>Ready to take a closer look?</h2>
   <p style="margin:0 auto var(--sp-5);color:rgba(255,255,255,0.85);">
-    Subscribe to the offering — or reach out to Dan Wagman directly for a 30-minute walkthrough of the underwriting.
+    Subscribe to the offering &mdash; or reach out to Dan Wagman directly via email.
   </p>
   <div style="display:flex;gap:var(--sp-4);justify-content:center;flex-wrap:wrap;">
     <a class="p-btn" href="#subscribe" data-action="subscribe" style="background:var(--p-cyan);border-color:var(--p-cyan);">Subscribe to the Offering</a>
@@ -1523,10 +1555,10 @@
 <script type="application/json" id="deal-config">
 {
   "deal": {
-    "name": "747 Front St",
+    "name": "747 Front Street",
     "name_short": "747 Front",
     "name_part_a": "747",
-    "name_part_b": "Front St",
+    "name_part_b": "Front Street",
     "address": "747 Front Street, San Francisco, CA",
     "city": "San Francisco",
     "submarket": "Jackson Square",
@@ -1793,9 +1825,9 @@
     {
       date: 'Q2 2026',
       title: 'Close acquisition',
-      body: `<p>Pendulum closes on the off-market loan acquisition at $46.95M ($575/sf). Senior debt
-        (Ares seller financing at ±69% LTC) funds concurrently. Title transfers and Pendulum becomes the
-        senior lender on the building, alongside institutional LP Landrock.</p>
+      body: `<p>Pendulum closes on the off-market acquisition at $46.95M ($575/sf). Senior debt
+        (Ares seller financing at ±69% LTC) funds concurrently. Title transfers and Pendulum takes control
+        of day-to-day operations and management alongside Landrock.</p>
         <ul>
           <li>Wire Co-GP equity contributions to escrow</li>
           <li>LP equity (Landrock) funded concurrently — $12.9M</li>
@@ -1847,8 +1879,9 @@
       body: `<p>Two paths at the end of the 36-month hold, each evaluated against then-current market
         conditions:</p>
         <ul>
-          <li><strong>Sell</strong> to institutional buyer at a value above the stabilized basis &mdash;
-            return capital plus the targeted Co-GP return.</li>
+          <li><strong>Sell</strong> to institutional buyer &mdash; return of capital plus the targeted Co-GP return.
+            <ul style="margin-top:6px;"><li>Base Case returns based on a conservative exit value below prior ownership's basis</li></ul>
+          </li>
           <li><strong>Refinance</strong> into permanent debt and continue to hold if the capital-markets
             window supports an attractive recap.</li>
         </ul>`
