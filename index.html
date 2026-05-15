@@ -236,14 +236,17 @@
 <body class="is-gated">
 
 <!-- ======= 506(b) PRIVATE-OFFERING GATE =======
-     Step 1: Accredited investor + pre-existing relationship acknowledgment
-     Step 2: Access password (provided by Pendulum's deal team)
-     The password check is client-side obscurity, not security. -->
+     Step 1: Name + Email capture + accredited / relationship / informational acknowledgments
+             → logs to "Access Requests" Google Sheet via Apps Script
+             → emails the user a generated access code (first-initial + lastname + counter)
+     Step 2: Access code entry → server-side verified against the same sheet
+     The access endpoint URL is window.ACCESS_ENDPOINT (defined near the bottom of the page). -->
 <div class="p-gate" id="gate">
   <div class="p-gate__panel">
     <img class="p-gate__logo" src="assets/logo-navy.svg" alt="Pendulum Property Partners">
     <span class="p-gate__eyebrow">Confidential · Private Offering · Regulation D 506(b)</span>
-    <h2 class="p-gate__title">747 Front St &mdash; Investor Offering</h2>
+    <h2 class="p-gate__title" style="text-align:center;">747 Front Street San Francisco, CA</h2>
+    <p class="p-gate__subline" style="text-align:center;font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--p-cyan);margin:0 0 var(--sp-5);letter-spacing:0.5px;">Investor Offering</p>
 
     <!-- Progress indicator (2 steps) -->
     <div class="p-gate__progress">
@@ -251,20 +254,25 @@
       <span id="gate-prog-2"></span>
     </div>
 
-    <!-- ===== Step 1: Acknowledgment ===== -->
+    <!-- ===== Step 1: Name + Email + Acknowledgments ===== -->
     <div class="p-gate__step is-active" data-step="1">
       <p class="p-gate__sub">
         This page is a confidential preview of a private real-estate offering under
         <strong>Rule 506(b) of Regulation D</strong>. It is not a general solicitation and is intended
         only for investors with a pre-existing substantive relationship with Pendulum Property
-        Partners. Please confirm the following before continuing.
+        Partners. Please provide your details and confirm the following before continuing.
       </p>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:var(--sp-4);">
+        <input type="text" id="gate-name" class="p-gate__input" placeholder="First and Last Name" autocomplete="name" required>
+        <input type="email" id="gate-email" class="p-gate__input" placeholder="Email address" autocomplete="email" required>
+      </div>
 
       <label class="p-gate__check">
         <input type="checkbox" id="ack-1" required>
         <span class="p-gate__check-text">
           <strong>I am an accredited investor</strong> as defined under Rule 501(a) of Regulation D
-          &mdash; or a sophisticated investor with sufficient knowledge and experience in financial
+          - or a sophisticated investor with sufficient knowledge and experience in financial
           matters to evaluate this offering.
         </span>
       </label>
@@ -287,18 +295,21 @@
         </span>
       </label>
 
+      <div class="p-gate__error" id="gate-step1-error" aria-live="polite" style="margin-top:8px;"></div>
+
       <button type="button" id="gate-continue" class="p-btn p-btn--no-arrow" style="width:100%;margin-top:var(--sp-3);" disabled>
         Continue
       </button>
     </div>
 
-    <!-- ===== Step 2: Password ===== -->
+    <!-- ===== Step 2: Access code entry ===== -->
     <div class="p-gate__step" data-step="2">
-      <p class="p-gate__sub">
-        Enter the access password provided by Pendulum's deal team.
+      <p class="p-gate__sub" style="text-align:center;">
+        We've emailed your access code to <strong id="gate-email-echo">your email</strong>.<br>
+        Enter it below to view the offering.
       </p>
       <form id="gate-form" autocomplete="off">
-        <input type="password" class="p-gate__input" id="gate-input" placeholder="Access password" autocomplete="off" required>
+        <input type="text" class="p-gate__input" id="gate-input" placeholder="Access code" autocomplete="off" autocapitalize="off" spellcheck="false" required>
         <div class="p-gate__error" id="gate-error" aria-live="polite"></div>
         <div class="p-gate__btn-row">
           <button type="button" id="gate-back" class="p-btn p-btn--no-arrow" style="flex:0 0 auto;background:transparent;color:var(--p-navy);border:1px solid var(--color-border);">Back</button>
@@ -315,19 +326,32 @@
 </div>
 
 <script>
-  // 506(b) gate flow — step 1: acknowledgments, step 2: password.
+  // 506(b) gate flow:
+  //   Step 1 — capture First+Last Name + Email + 3 acknowledgment checkboxes.
+  //            On Continue, POST {action:'request_access', firstName, lastName, email}
+  //            to the Apps Script (window.ACCESS_ENDPOINT). The script:
+  //              (a) appends a row to the "Access Requests" sheet,
+  //              (b) generates an access code (first initial + last name + counter),
+  //              (c) emails the access code to the user, and emails Cody a copy.
+  //            Client then advances to Step 2.
+  //   Step 2 — user types the code from their email. We POST
+  //            {action:'verify_password', password} back to the Apps Script,
+  //            which checks the sheet. On match → unlock + cache in sessionStorage.
   (function () {
-    const STORAGE_KEY = 'pendulum_gate_unlocked_v2';
+    const STORAGE_KEY  = 'pendulum_gate_unlocked_v3';
     const gate         = document.getElementById('gate');
     const form         = document.getElementById('gate-form');
     const passInput    = document.getElementById('gate-input');
     const errorEl      = document.getElementById('gate-error');
     const continueBtn  = document.getElementById('gate-continue');
     const backBtn      = document.getElementById('gate-back');
+    const nameInput    = document.getElementById('gate-name');
+    const emailInput   = document.getElementById('gate-email');
+    const emailEcho    = document.getElementById('gate-email-echo');
+    const step1Err     = document.getElementById('gate-step1-error');
     const acks         = [document.getElementById('ack-1'), document.getElementById('ack-2'), document.getElementById('ack-3')];
     const step1        = gate.querySelector('[data-step="1"]');
     const step2        = gate.querySelector('[data-step="2"]');
-    const prog1        = document.getElementById('gate-prog-1');
     const prog2        = document.getElementById('gate-prog-2');
 
     // Restore if previously unlocked in this browser session
@@ -348,42 +372,125 @@
       try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
     }
 
-    // Step 1 — enable Continue once all 3 checks are ticked
-    function refreshContinue() {
-      continueBtn.disabled = !acks.every(b => b && b.checked);
+    function isValidEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     }
+    function isValidName(v) {
+      // require at least two whitespace-separated tokens (first + last)
+      return v.trim().split(/\s+/).length >= 2;
+    }
+
+    // Step 1 — enable Continue once name, email AND all 3 boxes are valid
+    function refreshContinue() {
+      const ok =
+        isValidName(nameInput.value) &&
+        isValidEmail(emailInput.value.trim()) &&
+        acks.every(b => b && b.checked);
+      continueBtn.disabled = !ok;
+    }
+    [nameInput, emailInput].forEach(el => el && el.addEventListener('input', refreshContinue));
     acks.forEach(b => b && b.addEventListener('change', refreshContinue));
     refreshContinue();
 
-    continueBtn.addEventListener('click', () => {
-      if (acks.every(b => b.checked)) showStep(2);
+    continueBtn.addEventListener('click', async () => {
+      const fullName = nameInput.value.trim().replace(/\s+/g, ' ');
+      const parts    = fullName.split(' ');
+      const firstName = parts[0];
+      const lastName  = parts.slice(1).join(' ');
+      const email     = emailInput.value.trim();
+
+      if (!firstName || !lastName || !email || !acks.every(b => b.checked)) return;
+
+      step1Err.textContent = '';
+      const prevLabel = continueBtn.textContent;
+      continueBtn.disabled = true;
+      continueBtn.textContent = 'Sending access code…';
+
+      const payload = {
+        action:    'request_access',
+        firstName: firstName,
+        lastName:  lastName,
+        email:     email,
+        timestamp: new Date().toISOString(),
+        source_url: window.location.href
+      };
+
+      const endpoint = window.ACCESS_ENDPOINT;
+      if (!endpoint || endpoint.indexOf('REPLACE') === 0) {
+        // Endpoint not yet configured — surface a friendly message
+        console.warn('[gate] ACCESS_ENDPOINT not configured; payload:', payload);
+        step1Err.textContent = 'Access endpoint not yet configured. Contact dwagman@pendulumpp.com.';
+        continueBtn.textContent = prevLabel;
+        refreshContinue();
+        return;
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method:  'POST',
+          // text/plain dodges CORS preflight from a static page
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body:    JSON.stringify(payload)
+        });
+        const json = await res.json().catch(() => ({}));
+        if (json && json.ok) {
+          emailEcho.textContent = email;
+          continueBtn.textContent = prevLabel;
+          showStep(2);
+        } else {
+          step1Err.textContent = (json && json.error) || 'Something went wrong. Please try again or contact Pendulum.';
+          continueBtn.textContent = prevLabel;
+          refreshContinue();
+        }
+      } catch (err) {
+        console.error('[gate] request_access failed:', err);
+        step1Err.textContent = 'Could not reach the access endpoint. Check your connection and try again.';
+        continueBtn.textContent = prevLabel;
+        refreshContinue();
+      }
     });
+
     backBtn.addEventListener('click', () => showStep(1));
 
-    // Lightweight FNV-1a hash so the literal password isn't sitting in source.
-    // Note: this is OBSCURITY, not security — anyone with DevTools can read the
-    // expected hash. Substantive accreditation/relationship verification is
-    // handled separately by the Pendulum deal team.
-    function hash(s) {
-      let h = 0x811c9dc5 >>> 0;
-      for (let i = 0; i < s.length; i++) {
-        h ^= s.charCodeAt(i);
-        h = Math.imul(h, 0x01000193) >>> 0;
-      }
-      return h.toString(16);
-    }
-    // Hash of "pendulum" (lowercased, case-insensitive)
-    const EXPECTED = 'a6335e47';
-
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const guess = passInput.value.trim().toLowerCase();
-      if (hash(guess) === EXPECTED) {
-        unlock();
-      } else {
-        errorEl.textContent = 'Incorrect password. Try again or contact Pendulum.';
-        passInput.value = '';
-        passInput.focus();
+      const guess = passInput.value.trim();
+      if (!guess) return;
+
+      errorEl.textContent = '';
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const prevLabel = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Checking…';
+
+      const endpoint = window.ACCESS_ENDPOINT;
+      if (!endpoint || endpoint.indexOf('REPLACE') === 0) {
+        errorEl.textContent = 'Access endpoint not yet configured. Contact dwagman@pendulumpp.com.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = prevLabel;
+        return;
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method:  'POST',
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body:    JSON.stringify({ action: 'verify_password', password: guess })
+        });
+        const json = await res.json().catch(() => ({}));
+        if (json && json.ok) {
+          unlock();
+        } else {
+          errorEl.textContent = 'Incorrect code. Check your email or contact Pendulum.';
+          passInput.value = '';
+          passInput.focus();
+        }
+      } catch (err) {
+        console.error('[gate] verify_password failed:', err);
+        errorEl.textContent = 'Could not reach the access endpoint. Try again.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = prevLabel;
       }
     });
   })();
@@ -456,7 +563,7 @@
       </div>
     </div>
     <p data-reveal style="margin:var(--sp-5) 0 0;text-align:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--p-navy);">
-      Anticipated Close &mdash; July 1
+      Anticipated Close - July 1
     </p>
     <p class="p-disclosure" style="margin-top:var(--sp-5);">
       <strong>¹ Target Returns</strong>
@@ -1053,7 +1160,7 @@
         </div>
       </div>
       <p style="margin-top:var(--sp-5);text-align:center;font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--p-navy);">
-        Anticipated Close &mdash; July 1
+        Anticipated Close - July 1
       </p>
       <p style="margin-top:var(--sp-4);font-size:11px;color:var(--p-gray);line-height:1.6;">
         <strong style="color:var(--color-text-strong);">² Illustrative Only.</strong> Target levered return and
@@ -1285,7 +1392,7 @@
           <li style="margin-top:6px;"><strong>65k+ square feet</strong> of renewals and new deals under negotiation</li>
           <li style="margin-top:6px;"><strong>6k square feet</strong> added through BOMA 2024 re-measurement</li>
           <li style="margin-top:6px;"><strong>Amenity upgrades:</strong> (1) Golf simulator renovation completed; (2) restaurant operator agreement executed / restaurant construction completion estimated for Q3 2026</li>
-          <li style="margin-top:6px;">Additional information of Landrock Capital Partners can be found here &mdash; <a href="https://www.landrock.com/" target="_blank" rel="noopener" style="color:var(--p-navy);font-weight:600;">www.landrock.com</a></li>
+          <li style="margin-top:6px;">Additional information of Landrock Capital Partners can be found here - <a href="https://www.landrock.com/" target="_blank" rel="noopener" style="color:var(--p-navy);font-weight:600;">www.landrock.com</a></li>
         </ul>
       </div>
       <div>
@@ -1374,7 +1481,7 @@
   <span class="p-eyebrow p-eyebrow--accent">Next Step</span>
   <h2>Ready to take a closer look?</h2>
   <p style="margin:0 auto var(--sp-5);color:rgba(255,255,255,0.85);">
-    Subscribe to the offering &mdash; or reach out to Dan Wagman directly via email.
+    Subscribe to the offering - or reach out to Dan Wagman directly via email.
   </p>
   <div style="display:flex;gap:var(--sp-4);justify-content:center;flex-wrap:wrap;">
     <a class="p-btn" href="#subscribe" data-action="subscribe" style="background:var(--p-cyan);border-color:var(--p-cyan);">Subscribe to the Offering</a>
@@ -2220,6 +2327,10 @@
   //
   // Replace this URL with the actual deployed Apps Script web-app URL.
   window.SUBSCRIBE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwiGCqsMNPbgw5-UJCnA0VRT-J3IoJUB9-8LiSh4wVzlK5f8Kybe9lFvhB-3aBjHO9C/exec';
+  // The pre-prompt access gate (request_access + verify_password) talks to the
+  // SAME Apps Script endpoint — actions are routed by the `action` field in
+  // the JSON payload (see the gate <script> block near the top of this file).
+  window.ACCESS_ENDPOINT    = window.SUBSCRIBE_ENDPOINT;
 
   const modal      = document.getElementById('sub-modal');
   const backdrop   = modal.querySelector('.p-sub-modal__backdrop');
